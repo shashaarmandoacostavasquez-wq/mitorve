@@ -102,7 +102,13 @@ app.post('/api/orders', async (req, res) => {
   const shipping = 0;
   const total = subtotal + shipping;
   const { data: order, error: oErr } = await adminClient.from('orders').insert({ customer_name: name, customer_phone: phone, customer_email: String(b.customer_email || '').trim() || null, delivery_address: address || 'A coordinar', delivery_notes: String(b.delivery_notes || '').slice(0,1000) || null, payment_method: 'cash', subtotal, shipping_cost: shipping, total }).select('id,total,created_at').single();
-  if (oErr) return res.status(500).json({ error: 'No se pudo guardar el pedido' });
+if (oErr) {
+  console.error('CREATE ORDER ERROR:', oErr);
+  return res.status(500).json({
+    error: 'No se pudo guardar el pedido',
+    details: oErr.message
+  });
+}
   const rows = safeItems.map(i => ({ ...i, order_id: order.id }));
   const { error: iErr } = await adminClient.from('order_items').insert(rows);
   if (iErr) { await adminClient.from('orders').delete().eq('id', order.id); return res.status(500).json({ error: 'No se pudo guardar el detalle del pedido' }); }
