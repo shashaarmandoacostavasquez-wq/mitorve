@@ -45,7 +45,7 @@ async function load(){
   <div class="muted">${esc(o.delivery_method)}${o.district?' · '+esc(o.district):''}${o.address?' · '+esc(o.address):''}</div>
   </div><select data-id="${esc(o.id)}">${[['new','Nuevo'],['confirmed','Confirmado'],['preparing','Preparando'],['delivered','Entregado'],['cancelled','Cancelado']].map(([v,n])=>`<option value="${v}" ${o.order_status===v?'selected':''}>${n}</option>`).join('')}</select></div>
   <div class="items">${(o.order_items||[]).map(i=>`<div>${esc(i.quantity)} × ${esc(i.product_name)} · presentación ${esc(i.presentation)}</div>`).join('')}</div></article>`).join('')||'<div class="card muted">No hay pedidos.</div>';
-  document.querySelectorAll('select[data-id]').forEach(s=>s.onchange=async()=>{try{await api('/api/admin/orders/'+encodeURIComponent(s.dataset.id)+'/status',{method:'PATCH',body:JSON.stringify({status:s.value})});$('#msg').textContent='Guardado'}catch(e){alert(e.message)}});
+  document.querySelectorAll('select[data-id]').forEach(s=>s.onchange=async()=>{try{await api('/api/admin/orders/'+encodeURIComponent(s.dataset.id),{method:'PATCH',body:JSON.stringify({status:s.value})});$('#msg').textContent='Guardado'}catch(e){alert(e.message)}});
   $('#msg').textContent='Listo';
  }catch(e){$('#msg').textContent=e.message;if(e.message.match(/sesión|autoriz/i)){token='';sessionStorage.removeItem('trAdminToken');screen(false)}}
 }
