@@ -459,7 +459,7 @@ async function renderOrders(){
     </article>
   `).join('');
 }
-}
+
 function repeatOrder(i){const o=orders[i];if(!o)return;cart=JSON.parse(JSON.stringify(o.items));save();updateCart();closeModal('ordersModal');toggleCart();toast('Pedido cargado al carrito')}
 function copyText(v){navigator.clipboard?.writeText(v).then(()=>toast('Copiado')).catch(()=>toast(v))}
 function copyOrderCode(){copyText($('successCode').textContent)}
