@@ -407,10 +407,58 @@ backendProducts = Array.isArray(productResponse)
  cart=[];save();updateCart();
 }
 function toggleFaq(btn){btn.parentElement.classList.toggle('open');btn.querySelector('span').textContent=btn.parentElement.classList.contains('open')?'−':'+'}
-function openOrders(){renderOrders();openModal('ordersModal')}
-function renderOrders(){
- const el=$('ordersList');if(!orders.length){el.innerHTML='<div class="notice">Todavía no hay pedidos guardados en este dispositivo.</div>';return}
- el.innerHTML=orders.map((o,i)=>`<article class="past-order"><div class="past-order-head"><div><strong class="order-code">${o.code}</strong><small style="display:block">${new Date(o.createdAt).toLocaleString('es-PE')}</small></div><strong>S/ ${money(o.total)}</strong></div><small>${o.items.map(x=>`${x.name} × ${x.qty}`).join(' · ')}</small><div class="past-order-actions"><button class="small-btn" onclick="repeatOrder(${i})">Repetir pedido</button><button class="small-btn" onclick="copyText('${o.code}')">Copiar código</button></div></article>`).join('')
+async function openOrders(){
+  openModal('ordersModal');
+  await renderOrders();
+}
+
+async function renderOrders(){
+  const el=$('ordersList');
+
+  if(!orders.length){
+    el.innerHTML='<div class="notice">Todavía no hay pedidos guardados en este dispositivo.</div>';
+    return;
+  }
+
+  el.innerHTML='<div class="notice">Actualizando estados...</div>';
+
+  await Promise.all(orders.map(async o=>{
+    if(!o.id) return;
+
+    try{
+      const r=await fetch('/api/orders/'+encodeURIComponent(o.id)+'/status');
+      if(!r.ok) return;
+
+      const data=await r.json();
+      o.status=data.status || o.status;
+    }catch(e){
+      console.error('Error consultando pedido:',e);
+    }
+  }));
+
+  save();
+
+  const nombres={
+    pending:'Pendiente',
+    confirmed:'Confirmado',
+    preparing:'Preparando',
+    ready:'Listo',
+    delivered:'Entregado',
+    cancelled:'Cancelado'
+  };
+
+  el.innerHTML=orders.map((o,i)=>`
+    <article class="past-order">
+      <div class="past-order-head">
+        <div>
+          <strong class="order-code">${esc(o.code||'Pedido')}</strong>
+          <small style="display:block">${new Date(o.createdAt).toLocaleString('es-PE')}</small>
+        </div>
+        <strong>${nombres[o.status] || o.status || 'Pendiente'}</strong>
+      </div>
+    </article>
+  `).join('');
+}
 }
 function repeatOrder(i){const o=orders[i];if(!o)return;cart=JSON.parse(JSON.stringify(o.items));save();updateCart();closeModal('ordersModal');toggleCart();toast('Pedido cargado al carrito')}
 function copyText(v){navigator.clipboard?.writeText(v).then(()=>toast('Copiado')).catch(()=>toast(v))}
