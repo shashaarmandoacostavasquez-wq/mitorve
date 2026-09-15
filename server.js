@@ -140,6 +140,19 @@ app.patch('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   if (error) return res.status(500).json({ error: 'No se pudo actualizar el pedido' });
   res.json(data);
 });
+app.get('/api/orders/:id/status', async (req, res) => {
+  const { data, error } = await adminClient
+    .from('orders')
+    .select('id,status,order_status,created_at,updated_at')
+    .eq('id', req.params.id)
+    .single();
+
+  if (error || !data) {
+    return res.status(404).json({ error: 'Pedido no encontrado' });
+  }
+
+  res.json(data);
+});
 
 app.get('/health', (req,res)=>res.json({ok:true}));
 const port = Number(process.env.PORT || 3000);
