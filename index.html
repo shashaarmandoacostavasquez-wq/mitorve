@@ -387,6 +387,7 @@ backendProducts = Array.isArray(productResponse)
 
  const localOrder={
    code,
+   id:savedOrder.id,
    createdAt:new Date().toISOString(),
    name,phone,method,district,address,date,time,payment,note,
    subtotal:sub,delivery:method==='Recojo'?0:fee,total:backendTotal,
