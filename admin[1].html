@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE REAL · Admin</title>
+<style>
+body{margin:0;background:#0d0b09;color:#fff8ee;font-family:system-ui,sans-serif}.w{max-width:950px;margin:auto;padding:24px}
+.card{background:#181411;border:1px solid #382e25;border-radius:16px;padding:18px;margin:14px 0}
+.login{max-width:400px;margin:10vh auto}input,select,button{font:inherit;padding:11px;border-radius:9px}
+input,select{width:100%;box-sizing:border-box;background:#0d0b09;color:#fff;border:1px solid #4a3b2f;margin:6px 0 14px}
+button{border:0;background:#d6ad6b;color:#1b140d;font-weight:800;cursor:pointer}.top{display:flex;justify-content:space-between;align-items:center}
+.muted{color:#b8aa9c}.hide{display:none}.order{margin:12px 0}.row{display:flex;justify-content:space-between;gap:15px;align-items:start}
+.items{border-top:1px solid #382e25;margin-top:12px;padding-top:10px}.err{color:#ffb5b5}
+@media(max-width:650px){.row{display:block}.row select{margin-top:12px}}
+</style>
+</head><body><main class="w">
+<section id="login" class="card login">
+<h1>THE REAL</h1><p class="muted">Panel privado</p>
+<form id="form">
+<label>Correo</label><input id="email" type="email" required autocomplete="username">
+<label>Contraseña</label><input id="pass" type="password" required autocomplete="current-password">
+<button>Entrar</button><p id="loginMsg" class="err"></p>
+</form></section>
+<section id="panel" class="hide">
+<div class="top"><div><h1>Pedidos</h1><span class="muted">THE REAL · Administración</span></div><button id="logout">Salir</button></div>
+<div class="card"><button id="refresh">Actualizar pedidos</button> <span id="msg" class="muted"></span></div>
+<div id="orders"></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let token=sessionStorage.getItem('trAdminToken')||'';
+async function api(url,opt={}){
+ const h={'Content-Type':'application/json',...(opt.headers||{})}; if(token)h.Authorization='Bearer '+token;
+ const r=await fetch(url,{...opt,headers:h}); const d=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error(d.error||'Error del servidor'); return d;
+}
+function screen(ok){$('#login').classList.toggle('hide',ok);$('#panel').classList.toggle('hide',!ok)}
+async function load(){
+ try{
+  $('#msg').textContent='Cargando...'; const d=await api('/api/admin/orders');
+  $('#orders').innerHTML=(d.orders||[]).map(o=>`<article class="card order"><div class="row"><div>
+  <b>${esc(o.order_code)}</b> · S/ ${Number(o.total||0).toFixed(2)}
+  <div class="muted">${esc(o.customer_name)} · ${esc(o.customer_phone)}</div>
+  <div class="muted">${esc(o.delivery_method)}${o.district?' · '+esc(o.district):''}${o.address?' · '+esc(o.address):''}</div>
+  </div><select data-id="${esc(o.id)}">${[['new','Nuevo'],['confirmed','Confirmado'],['preparing','Preparando'],['delivered','Entregado'],['cancelled','Cancelado']].map(([v,n])=>`<option value="${v}" ${o.order_status===v?'selected':''}>${n}</option>`).join('')}</select></div>
+  <div class="items">${(o.order_items||[]).map(i=>`<div>${esc(i.quantity)} × ${esc(i.product_name)} · presentación ${esc(i.presentation)}</div>`).join('')}</div></article>`).join('')||'<div class="card muted">No hay pedidos.</div>';
+  document.querySelectorAll('select[data-id]').forEach(s=>s.onchange=async()=>{try{await api('/api/admin/orders/'+encodeURIComponent(s.dataset.id)+'/status',{method:'PATCH',body:JSON.stringify({status:s.value})});$('#msg').textContent='Guardado'}catch(e){alert(e.message)}});
+  $('#msg').textContent='Listo';
+ }catch(e){$('#msg').textContent=e.message;if(e.message.match(/sesión|autoriz/i)){token='';sessionStorage.removeItem('trAdminToken');screen(false)}}
+}
+$('#form').onsubmit=async e=>{e.preventDefault();try{const d=await api('/api/admin/login',{method:'POST',body:JSON.stringify({email:$('#email').value,password:$('#pass').value})});token=d.access_token;sessionStorage.setItem('trAdminToken',token);screen(true);load()}catch(x){$('#loginMsg').textContent=x.message}};
+$('#logout').onclick=()=>{token='';sessionStorage.removeItem('trAdminToken');screen(false)};
+$('#refresh').onclick=load;if(token){screen(true);load()}else screen(false);
+</script></body></html>
