@@ -40,7 +40,7 @@ async function load(){
  try{
   $('#msg').textContent='Cargando...'; const d=await api('/api/admin/orders');
   $('#orders').innerHTML=(d||[]).map(o=>`<article class="card order"><div class="row"><div>
-  <b>${esc(o.order_code)}</b> · S/ ${Number(o.total||0).toFixed(2)}
+  <b>Pedido #${String(o.id).slice(0,8).toUpperCase()}</b> · S/ ${Number(o.total||0).toFixed(2)}
   <div class="muted">${esc(o.customer_name)} · ${esc(o.customer_phone)}</div>
   <div class="muted">${esc(o.delivery_method)}${o.district?' · '+esc(o.district):''}${o.address?' · '+esc(o.address):''}</div>
   </div><select data-id="${esc(o.id)}">${[['new','Nuevo'],['confirmed','Confirmado'],['preparing','Preparando'],['delivered','Entregado'],['cancelled','Cancelado']].map(([v,n])=>`<option value="${v}" ${o.order_status===v?'selected':''}>${n}</option>`).join('')}</select></div>
