@@ -35,7 +35,39 @@ async function requireAdmin(req, res, next) {
   if (adminError || !admin) return res.status(403).json({ error: 'Acceso de administrador requerido' });
   req.user = userData.user;
   next();
-}
+} app.post('/api/admin/login', async (req, res) => {
+  if (!requireConfig(res)) return;
+
+  const email = String(req.body?.email || '').trim();
+  const password = String(req.body?.password || '');
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Correo y contraseña requeridos' });
+  }
+
+  const { data, error } = await adminClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error || !data?.session || !data?.user) {
+    return res.status(401).json({ error: 'Correo o contraseña incorrectos' });
+  }
+
+  const { data: admin, error: adminError } = await adminClient
+    .from('admin_users')
+    .select('user_id')
+    .eq('user_id', data.user.id)
+    .maybeSingle();
+
+  if (adminError || !admin) {
+    return res.status(403).json({ error: 'Esta cuenta no es administrador' });
+  }
+
+  res.json({
+    access_token: data.session.access_token
+  });
+});
 
 app.get('/api/products', async (req, res) => {
   if (!requireConfig(res)) return;
