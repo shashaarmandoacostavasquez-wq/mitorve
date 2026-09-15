@@ -59,7 +59,7 @@ async function requireAdmin(req, res, next) {
     .select('user_id')
     .eq('user_id', data.user.id)
     .maybeSingle();
-
+console.log('ADMIN CHECK:', { userId: data.user.id, admin, adminError });
   if (adminError || !admin) {
     return res.status(403).json({ error: 'Esta cuenta no es administrador' });
   }
