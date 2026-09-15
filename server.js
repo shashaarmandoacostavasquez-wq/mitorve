@@ -73,7 +73,7 @@ app.get('/api/products', async (req, res) => {
   if (!requireConfig(res)) return;
   const { data, error } = await adminClient.from('products').select('id,name,slug,category,description,price,image_url,active').eq('active', true).order('name');
   if (error) return res.status(500).json({ error: 'No se pudieron cargar los productos' });
-  res.json(data || []);
+  res.json({ orders: data || [] });
 });
 
 app.post('/api/orders', async (req, res) => {
