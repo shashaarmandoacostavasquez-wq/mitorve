@@ -111,9 +111,10 @@ app.post('/api/orders', async (req, res) => {
 
 app.get('/api/admin/orders', requireAdmin, async (req, res) => {
   const { data, error } = await adminClient.from('orders').select('*,order_items(*)').order('created_at', { ascending: false }).limit(200);
-  if (error) return res.status(500).json({ error: 'No se pudieron cargar los pedidos' });
-  res.json(data || []);
-});
+  if (error) {
+  console.error('ORDERS ERROR:', error);
+  return res.status(500).json({ error: 'No se pudieron cargar los pedidos', details: error.message });
+}
 
 app.patch('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   const allowed = ['pending','confirmed','preparing','ready','delivered','cancelled'];
