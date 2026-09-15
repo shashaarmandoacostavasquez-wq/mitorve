@@ -451,7 +451,7 @@ async function renderOrders(){
     <article class="past-order">
       <div class="past-order-head">
         <div>
-          <strong class="order-code">${esc(o.code||'Pedido')}</strong>
+         <strong class="order-code">${o.code||'Pedido'}</strong>
           <small style="display:block">${new Date(o.createdAt).toLocaleString('es-PE')}</small>
         </div>
         <strong>${nombres[o.status] || o.status || 'Pendiente'}</strong>
