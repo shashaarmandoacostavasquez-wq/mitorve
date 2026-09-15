@@ -114,7 +114,8 @@ app.get('/api/admin/orders', requireAdmin, async (req, res) => {
   if (error) {
   console.error('ORDERS ERROR:', error);
   return res.status(500).json({ error: 'No se pudieron cargar los pedidos', details: error.message });
-}
+res.json(data || []);
+});}
 
 app.patch('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   const allowed = ['pending','confirmed','preparing','ready','delivered','cancelled'];
