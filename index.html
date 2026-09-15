@@ -310,7 +310,10 @@ async function sendOrder(){
  try{
    const pr=await fetch('/api/products');
    if(!pr.ok)throw new Error('No se pudieron cargar los productos');
-   backendProducts=await pr.json();
+  const productResponse = await pr.json();
+backendProducts = Array.isArray(productResponse)
+  ? productResponse
+  : (productResponse.products || productResponse.data || []);
  }catch(e){
    console.error(e);
    toast('No se pudo conectar con el servidor de productos.');
