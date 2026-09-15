@@ -39,7 +39,7 @@ function screen(ok){$('#login').classList.toggle('hide',ok);$('#panel').classLis
 async function load(){
  try{
   $('#msg').textContent='Cargando...'; const d=await api('/api/admin/orders');
-  $('#orders').innerHTML=(d.orders||[]).map(o=>`<article class="card order"><div class="row"><div>
+  $('#orders').innerHTML=(d||[]).map(o=>`<article class="card order"><div class="row"><div>
   <b>${esc(o.order_code)}</b> · S/ ${Number(o.total||0).toFixed(2)}
   <div class="muted">${esc(o.customer_name)} · ${esc(o.customer_phone)}</div>
   <div class="muted">${esc(o.delivery_method)}${o.district?' · '+esc(o.district):''}${o.address?' · '+esc(o.address):''}</div>
