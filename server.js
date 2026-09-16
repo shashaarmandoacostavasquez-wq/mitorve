@@ -383,10 +383,7 @@ app.post('/api/orders', async (req, res) => {
             address || 'A coordinar',
           delivery_notes:
             notes || null,
-          payment_method:
-            String(
-              body.payment_method || 'cash'
-            ).slice(0, 50),
+         payment_method: 'cash',
           subtotal,
           shipping_cost: shipping,
           total,
