@@ -3,71 +3,274 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>THE REAL · Admin</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
   margin:0;
   background:#0d0b09;
   color:#fff8ee;
-  font-family:system-ui,sans-serif
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-.w{max-width:950px;margin:auto;padding:24px}
+
+.w{
+  max-width:1050px;
+  margin:auto;
+  padding:24px;
+}
+
 .card{
   background:#181411;
   border:1px solid #382e25;
-  border-radius:16px;
-  padding:18px;
-  margin:14px 0
+  border-radius:18px;
+  padding:20px;
+  margin:14px 0;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
-.login{max-width:400px;margin:10vh auto}
+
+.login{
+  max-width:420px;
+  margin:10vh auto;
+}
+
+h1,h2,h3,p{
+  margin-top:0;
+}
+
 input,select,button{
   font:inherit;
-  padding:11px;
-  border-radius:9px
 }
+
 input,select{
   width:100%;
-  box-sizing:border-box;
+  padding:11px 12px;
+  border-radius:10px;
   background:#0d0b09;
   color:#fff;
   border:1px solid #4a3b2f;
-  margin:6px 0 14px
+  margin:6px 0 14px;
 }
+
 button{
+  padding:11px 16px;
   border:0;
+  border-radius:10px;
   background:#d6ad6b;
   color:#1b140d;
   font-weight:800;
-  cursor:pointer
+  cursor:pointer;
 }
-button:disabled{opacity:.55;cursor:not-allowed}
+
+button:hover{
+  filter:brightness(1.05);
+}
+
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
 .top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:15px
+  gap:15px;
 }
-.muted{color:#b8aa9c}
-.hide{display:none!important}
-.order{margin:12px 0}
-.row{
+
+.top h1{
+  margin-bottom:3px;
+}
+
+.muted{
+  color:#b8aa9c;
+}
+
+.hide{
+  display:none!important;
+}
+
+.err{
+  color:#ffb5b5;
+}
+
+.ok{
+  color:#9ee6b8;
+}
+
+/* PEDIDO */
+
+.order{
+  position:relative;
+  overflow:hidden;
+}
+
+.order::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:#d6ad6b;
+}
+
+.orderHead{
   display:flex;
   justify-content:space-between;
-  gap:15px;
-  align-items:start
+  align-items:flex-start;
+  gap:20px;
 }
+
+.orderCode{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.3px;
+}
+
+.total{
+  color:#e3bd7c;
+  font-size:19px;
+  font-weight:900;
+  margin-top:4px;
+}
+
+.customer{
+  margin-top:12px;
+  line-height:1.65;
+}
+
+.customer strong{
+  color:#fff8ee;
+}
+
+.statusBox{
+  min-width:180px;
+}
+
+.statusBox label{
+  display:block;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  color:#b8aa9c;
+  margin-bottom:4px;
+}
+
+.statusBox select{
+  margin:0;
+}
+
+/* INFO */
+
+.infoGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+
+.info{
+  background:#100d0b;
+  border:1px solid #30271f;
+  border-radius:12px;
+  padding:12px;
+}
+
+.infoTitle{
+  font-size:11px;
+  color:#a99888;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  margin-bottom:5px;
+}
+
+.infoValue{
+  color:#f5eadb;
+  overflow-wrap:anywhere;
+}
+
+/* PRODUCTOS */
+
 .items{
   border-top:1px solid #382e25;
-  margin-top:12px;
-  padding-top:10px
+  margin-top:18px;
+  padding-top:15px;
 }
-.err{color:#ffb5b5}
-.ok{color:#9ee6b8}
 
-@media(max-width:650px){
-  .row{display:block}
-  .row select{margin-top:12px}
+.itemsTitle{
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.item{
+  background:#100d0b;
+  border:1px solid #30271f;
+  border-radius:12px;
+  padding:13px;
+  margin-top:9px;
+}
+
+.itemMain{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:800;
+}
+
+.itemDetails{
+  color:#b8aa9c;
+  font-size:14px;
+  line-height:1.65;
+  margin-top:7px;
+}
+
+.detail{
+  display:block;
+}
+
+.empty{
+  color:#b8aa9c;
+  padding:8px 0;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+#msg{
+  font-size:14px;
+}
+
+@media(max-width:700px){
+
+  .w{
+    padding:14px;
+  }
+
+  .orderHead{
+    display:block;
+  }
+
+  .statusBox{
+    margin-top:16px;
+    min-width:0;
+  }
+
+  .infoGrid{
+    grid-template-columns:1fr;
+  }
+
+  .itemMain{
+    display:block;
+  }
 }
 </style>
 </head>
@@ -76,12 +279,17 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 <main class="w">
 
+<!-- LOGIN -->
+
 <section id="login" class="card login">
+
   <h1>THE REAL</h1>
-  <p class="muted">Panel privado</p>
+  <p class="muted">Panel privado de administración</p>
 
   <form id="form">
+
     <label>Correo</label>
+
     <input
       id="email"
       type="email"
@@ -90,6 +298,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
     >
 
     <label>Contraseña</label>
+
     <input
       id="pass"
       type="password"
@@ -97,26 +306,47 @@ button:disabled{opacity:.55;cursor:not-allowed}
       autocomplete="current-password"
     >
 
-    <button id="loginBtn" type="submit">Entrar</button>
+    <button id="loginBtn" type="submit">
+      Entrar
+    </button>
+
     <p id="loginMsg" class="err"></p>
+
   </form>
+
 </section>
+
+
+<!-- PANEL -->
 
 <section id="panel" class="hide">
 
   <div class="top">
+
     <div>
       <h1>Pedidos</h1>
-      <span class="muted">THE REAL · Administración</span>
+      <span class="muted">
+        THE REAL · Administración
+      </span>
     </div>
 
-    <button id="logout">Salir</button>
+    <button id="logout">
+      Salir
+    </button>
+
   </div>
 
-  <div class="card">
-    <button id="refresh">Actualizar pedidos</button>
+
+  <div class="card toolbar">
+
+    <button id="refresh">
+      Actualizar pedidos
+    </button>
+
     <span id="msg" class="muted"></span>
+
   </div>
+
 
   <div id="orders"></div>
 
@@ -124,22 +354,33 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 </main>
 
+
 <script>
-const $ = s => document.querySelector(s);
 
-const esc = s => String(s ?? '').replace(
-  /[&<>"']/g,
-  c => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c])
-);
+const $ = s =>
+  document.querySelector(s);
 
-let token = sessionStorage.getItem('trAdminToken') || '';
+
+const esc = s =>
+  String(s ?? '').replace(
+    /[&<>"']/g,
+    c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
+
+
+let token =
+  sessionStorage.getItem(
+    'trAdminToken'
+  ) || '';
+
 let loading = false;
+
 
 
 /* =========================
@@ -147,28 +388,45 @@ let loading = false;
 ========================= */
 
 function screen(logged){
-  $('#login').classList.toggle('hide', logged);
-  $('#panel').classList.toggle('hide', !logged);
+
+  $('#login').classList.toggle(
+    'hide',
+    logged
+  );
+
+  $('#panel').classList.toggle(
+    'hide',
+    !logged
+  );
+
 }
 
 
+
 /* =========================
-   LIMPIAR SESIÓN
+   SESIÓN
 ========================= */
 
 function clearSession(){
+
   token = '';
 
-  sessionStorage.removeItem('trAdminToken');
+  sessionStorage.removeItem(
+    'trAdminToken'
+  );
 
   $('#orders').innerHTML = '';
+
   $('#msg').textContent = '';
+
   $('#loginMsg').textContent = '';
 
   $('#pass').value = '';
 
   screen(false);
+
 }
+
 
 
 /* =========================
@@ -176,42 +434,70 @@ function clearSession(){
 ========================= */
 
 async function api(url,opt={}){
+
   const headers = {
     'Content-Type':'application/json',
     ...(opt.headers || {})
   };
 
   if(token){
-    headers.Authorization = 'Bearer ' + token;
+
+    headers.Authorization =
+      'Bearer ' + token;
+
   }
 
-  const response = await fetch(url,{
-    ...opt,
-    headers,
-    cache:'no-store'
-  });
 
-  const data = await response.json().catch(()=>({}));
-
-  if(response.status === 401 || response.status === 403){
-    const error = new Error(
-      data.error || 'Sesión vencida'
+  const response =
+    await fetch(
+      url,
+      {
+        ...opt,
+        headers,
+        cache:'no-store'
+      }
     );
 
+
+  const data =
+    await response
+      .json()
+      .catch(()=>({}));
+
+
+  if(
+    response.status === 401 ||
+    response.status === 403
+  ){
+
+    const error =
+      new Error(
+        data.error ||
+        'Sesión vencida'
+      );
+
     error.auth = true;
+
     throw error;
+
   }
 
+
   if(!response.ok){
+
     throw new Error(
       data.error ||
       data.details ||
       'Error del servidor'
     );
+
   }
 
+
   return data;
+
 }
+
 
 
 /* =========================
@@ -219,13 +505,474 @@ async function api(url,opt={}){
 ========================= */
 
 const STATES = [
+
   ['pending','Nuevo'],
+
   ['confirmed','Confirmado'],
+
   ['preparing','Preparando'],
+
   ['ready','Listo'],
+
   ['delivered','Entregado'],
+
   ['cancelled','Cancelado']
+
 ];
+
+
+
+/* =========================
+   PERSONALIZACIÓN
+========================= */
+
+function parseCustomization(value){
+
+  if(!value){
+    return {};
+  }
+
+  if(
+    typeof value === 'object'
+  ){
+    return value;
+  }
+
+  try{
+
+    return JSON.parse(value);
+
+  }catch{
+
+    return {
+      text:String(value)
+    };
+
+  }
+
+}
+
+
+function niceValue(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ''
+  ){
+    return '';
+  }
+
+  if(Array.isArray(value)){
+
+    return value
+      .filter(Boolean)
+      .join(', ');
+
+  }
+
+  if(typeof value === 'object'){
+
+    return Object.values(value)
+      .filter(Boolean)
+      .join(', ');
+
+  }
+
+  return String(value);
+
+}
+
+
+
+/* =========================
+   PRODUCTO
+========================= */
+
+function renderItem(item){
+
+  const custom =
+    parseCustomization(
+      item.customization
+    );
+
+
+  const presentation =
+    item.presentation ||
+    custom.presentation ||
+    custom.pack ||
+    '';
+
+
+  const cover =
+    item.chocolate_cover ||
+    custom.cover ||
+    custom.chocolate_cover ||
+    '';
+
+
+  const extras =
+    item.extras ||
+    custom.extras ||
+    [];
+
+
+  const dedication =
+    item.dedication ||
+    custom.dedication ||
+    custom.message ||
+    '';
+
+
+  const quantity =
+    Number(item.quantity || 0);
+
+
+  const unitPrice =
+    Number(item.unit_price || 0);
+
+
+  const lineTotal =
+    quantity * unitPrice;
+
+
+  return `
+    <div class="item">
+
+      <div class="itemMain">
+
+        <span>
+          ${esc(quantity)}
+          ×
+          ${esc(item.product_name || 'Producto')}
+        </span>
+
+        ${
+          lineTotal > 0
+          ? `<span>S/ ${lineTotal.toFixed(2)}</span>`
+          : ''
+        }
+
+      </div>
+
+
+      <div class="itemDetails">
+
+        ${
+          presentation
+          ? `
+            <span class="detail">
+              Presentación:
+              ${esc(presentation)}
+            </span>
+          `
+          : ''
+        }
+
+
+        ${
+          cover
+          ? `
+            <span class="detail">
+              Cobertura:
+              ${esc(cover)}
+            </span>
+          `
+          : ''
+        }
+
+
+        ${
+          niceValue(extras)
+          ? `
+            <span class="detail">
+              Extras:
+              ${esc(niceValue(extras))}
+            </span>
+          `
+          : ''
+        }
+
+
+        ${
+          dedication
+          ? `
+            <span class="detail">
+              Dedicatoria:
+              ${esc(dedication)}
+            </span>
+          `
+          : ''
+        }
+
+
+        ${
+          custom.text
+          ? `
+            <span class="detail">
+              Personalización:
+              ${esc(custom.text)}
+            </span>
+          `
+          : ''
+        }
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+
+/* =========================
+   PEDIDO
+========================= */
+
+function renderOrder(order){
+
+  const status =
+    order.status ||
+    order.order_status ||
+    'pending';
+
+
+  const address =
+    order.delivery_address ||
+    order.address ||
+    '';
+
+
+  const items =
+    Array.isArray(order.order_items)
+      ? order.order_items
+      : [];
+
+
+  const payment =
+    order.payment_method ||
+    '';
+
+
+  const notes =
+    order.delivery_notes ||
+    order.notes ||
+    '';
+
+
+  const created =
+    order.created_at
+      ? new Date(
+          order.created_at
+        ).toLocaleString(
+          'es-PE'
+        )
+      : '';
+
+
+  return `
+
+  <article class="card order">
+
+    <div class="orderHead">
+
+      <div>
+
+        <div class="orderCode">
+
+          Pedido #
+          ${esc(
+            String(order.id)
+              .slice(0,8)
+              .toUpperCase()
+          )}
+
+        </div>
+
+
+        <div class="total">
+
+          S/
+          ${Number(
+            order.total || 0
+          ).toFixed(2)}
+
+        </div>
+
+
+        <div class="customer">
+
+          <strong>
+            ${esc(
+              order.customer_name ||
+              'Sin nombre'
+            )}
+          </strong>
+
+          ${
+            order.customer_phone
+            ? `
+              <div class="muted">
+                ${esc(order.customer_phone)}
+              </div>
+            `
+            : ''
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="statusBox">
+
+        <label>
+          Estado del pedido
+        </label>
+
+        <select
+          data-id="${esc(order.id)}"
+        >
+
+          ${
+            STATES
+              .map(
+                ([value,name]) => `
+
+                <option
+                  value="${value}"
+                  ${
+                    status === value
+                      ? 'selected'
+                      : ''
+                  }
+                >
+                  ${name}
+                </option>
+
+              `
+              )
+              .join('')
+          }
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="infoGrid">
+
+      ${
+        address
+        ? `
+          <div class="info">
+
+            <div class="infoTitle">
+              Dirección
+            </div>
+
+            <div class="infoValue">
+              ${esc(address)}
+            </div>
+
+          </div>
+        `
+        : ''
+      }
+
+
+      ${
+        payment
+        ? `
+          <div class="info">
+
+            <div class="infoTitle">
+              Pago
+            </div>
+
+            <div class="infoValue">
+              ${
+                payment === 'cash'
+                  ? 'Pago coordinado'
+                  : esc(payment)
+              }
+            </div>
+
+          </div>
+        `
+        : ''
+      }
+
+
+      ${
+        created
+        ? `
+          <div class="info">
+
+            <div class="infoTitle">
+              Fecha del pedido
+            </div>
+
+            <div class="infoValue">
+              ${esc(created)}
+            </div>
+
+          </div>
+        `
+        : ''
+      }
+
+
+      ${
+        notes
+        ? `
+          <div class="info">
+
+            <div class="infoTitle">
+              Notas
+            </div>
+
+            <div class="infoValue">
+              ${esc(notes)}
+            </div>
+
+          </div>
+        `
+        : ''
+      }
+
+    </div>
+
+
+    <div class="items">
+
+      <div class="itemsTitle">
+        Productos
+      </div>
+
+      ${
+        items.length
+          ? items
+              .map(renderItem)
+              .join('')
+          : `
+            <div class="empty">
+              Sin detalle de productos
+            </div>
+          `
+      }
+
+    </div>
+
+  </article>
+
+  `;
+
+}
+
 
 
 /* =========================
@@ -234,180 +981,154 @@ const STATES = [
 
 async function load(){
 
-  if(loading) return;
+  if(loading){
+    return;
+  }
+
 
   loading = true;
 
   $('#refresh').disabled = true;
-  $('#msg').textContent = 'Cargando...';
+
+  $('#msg').textContent =
+    'Cargando...';
+
 
   try{
 
-    const data = await api('/api/admin/orders');
+    const data =
+      await api(
+        '/api/admin/orders'
+      );
 
-    const orders = Array.isArray(data)
-      ? data
-      : [];
+
+    const orders =
+      Array.isArray(data)
+        ? data
+        : [];
+
 
     $('#orders').innerHTML =
-      orders.map(order => {
 
-        const status =
-          order.status ||
-          order.order_status ||
-          'pending';
+      orders.length
 
-        const address =
-          order.delivery_address ||
-          order.address ||
-          '';
+        ? orders
+            .map(renderOrder)
+            .join('')
 
-        const items =
-          Array.isArray(order.order_items)
-            ? order.order_items
-            : [];
-
-        return `
-        <article class="card order">
-
-          <div class="row">
-
-            <div>
-
-              <b>
-                Pedido #
-                ${esc(String(order.id).slice(0,8).toUpperCase())}
-              </b>
-
-              · S/
-              ${Number(order.total || 0).toFixed(2)}
-
-              <div class="muted">
-                ${esc(order.customer_name)}
-                ·
-                ${esc(order.customer_phone)}
-              </div>
-
-              ${
-                address
-                ? `<div class="muted">${esc(address)}</div>`
-                : ''
-              }
-
-            </div>
-
-            <select data-id="${esc(order.id)}">
-
-              ${STATES.map(([value,name]) => `
-                <option
-                  value="${value}"
-                  ${status === value ? 'selected' : ''}
-                >
-                  ${name}
-                </option>
-              `).join('')}
-
-            </select>
-
+        : `
+          <div class="card muted">
+            No hay pedidos.
           </div>
-
-          <div class="items">
-
-            ${
-              items.length
-              ? items.map(item => `
-                  <div>
-                    ${esc(item.quantity)}
-                    ×
-                    ${esc(item.product_name)}
-                    ${
-                      item.presentation
-                      ? ` · ${esc(item.presentation)}`
-                      : ''
-                    }
-                  </div>
-                `).join('')
-              : '<div class="muted">Sin detalle de productos</div>'
-            }
-
-          </div>
-
-        </article>
         `;
-
-      }).join('')
-      ||
-      '<div class="card muted">No hay pedidos.</div>';
 
 
     document
-      .querySelectorAll('select[data-id]')
+      .querySelectorAll(
+        'select[data-id]'
+      )
       .forEach(select => {
 
-        select.onchange = async () => {
-
-          const previous =
-            select.dataset.previous ||
-            select.value;
-
-          select.disabled = true;
-
-          $('#msg').textContent =
-            'Guardando...';
-
-          try{
-
-            await api(
-              '/api/admin/orders/' +
-              encodeURIComponent(select.dataset.id),
-              {
-                method:'PATCH',
-                body:JSON.stringify({
-                  status:select.value
-                })
-              }
-            );
-
-            select.dataset.previous =
-              select.value;
-
-            $('#msg').textContent =
-              'Guardado ✓';
-
-          }catch(error){
-
-            select.value = previous;
-
-            if(error.auth){
-              clearSession();
-              $('#loginMsg').textContent =
-                'Tu sesión venció. Inicia sesión nuevamente.';
-              return;
-            }
-
-            alert(error.message);
-
-            $('#msg').textContent =
-              'No se pudo guardar';
-
-          }finally{
-
-            select.disabled = false;
-
-          }
-
-        };
 
         select.dataset.previous =
           select.value;
+
+
+        select.onchange =
+          async () => {
+
+
+            const previous =
+              select.dataset.previous;
+
+
+            select.disabled = true;
+
+
+            $('#msg').textContent =
+              'Guardando...';
+
+
+            try{
+
+              await api(
+
+                '/api/admin/orders/' +
+                encodeURIComponent(
+                  select.dataset.id
+                ),
+
+                {
+                  method:'PATCH',
+
+                  body:JSON.stringify({
+                    status:
+                      select.value
+                  })
+                }
+
+              );
+
+
+              select.dataset.previous =
+                select.value;
+
+
+              $('#msg').textContent =
+                'Guardado ✓';
+
+
+            }catch(error){
+
+
+              select.value =
+                previous;
+
+
+              if(error.auth){
+
+                clearSession();
+
+                $('#loginMsg')
+                  .textContent =
+                  'Tu sesión venció. Inicia sesión nuevamente.';
+
+                return;
+
+              }
+
+
+              alert(
+                error.message
+              );
+
+
+              $('#msg').textContent =
+                'No se pudo guardar';
+
+
+            }finally{
+
+              select.disabled =
+                false;
+
+            }
+
+          };
 
       });
 
 
     $('#msg').textContent =
-      `Listo · ${orders.length} pedido${orders.length === 1 ? '' : 's'}`;
+      `Listo · ${orders.length} pedido${
+        orders.length === 1
+          ? ''
+          : 's'
+      }`;
+
 
   }catch(error){
+
 
     if(error.auth){
 
@@ -417,97 +1138,148 @@ async function load(){
         'Tu sesión venció. Inicia sesión nuevamente.';
 
       return;
+
     }
+
 
     $('#msg').textContent =
       error.message;
 
+
   }finally{
 
     loading = false;
-    $('#refresh').disabled = false;
+
+    $('#refresh').disabled =
+      false;
 
   }
+
 }
+
 
 
 /* =========================
    LOGIN
 ========================= */
 
-$('#form').onsubmit = async event => {
+$('#form').onsubmit =
+  async event => {
 
-  event.preventDefault();
 
-  const button = $('#loginBtn');
+    event.preventDefault();
 
-  button.disabled = true;
 
-  $('#loginMsg').textContent =
-    'Ingresando...';
+    const button =
+      $('#loginBtn');
 
-  /*
-    IMPORTANTE:
-    No enviamos el token viejo al endpoint
-    de login.
-  */
 
-  const oldToken = token;
-  token = '';
+    button.disabled = true;
 
-  try{
 
-    const data = await api(
-      '/api/admin/login',
-      {
-        method:'POST',
-        body:JSON.stringify({
-          email:$('#email').value.trim(),
-          password:$('#pass').value
-        })
-      }
-    );
+    $('#loginMsg').textContent =
+      'Ingresando...';
 
-    if(!data.access_token){
-      throw new Error(
-        'El servidor no devolvió una sesión válida'
-      );
-    }
 
-    token = data.access_token;
-
-    sessionStorage.setItem(
-      'trAdminToken',
-      token
-    );
-
-    $('#loginMsg').textContent = '';
-
-    $('#pass').value = '';
-
-    screen(true);
-
-    await load();
-
-  }catch(error){
+    /*
+      Quitamos temporalmente cualquier
+      token viejo para que el endpoint
+      de login no lo reciba.
+    */
 
     token = '';
 
-    sessionStorage.removeItem(
-      'trAdminToken'
-    );
 
-    screen(false);
+    try{
 
-    $('#loginMsg').textContent =
-      error.message;
 
-  }finally{
+      const data =
+        await api(
 
-    button.disabled = false;
+          '/api/admin/login',
 
-  }
-};
+          {
+            method:'POST',
+
+            body:JSON.stringify({
+
+              email:
+                $('#email')
+                  .value
+                  .trim(),
+
+              password:
+                $('#pass')
+                  .value
+
+            })
+
+          }
+
+        );
+
+
+      if(!data.access_token){
+
+        throw new Error(
+          'El servidor no devolvió una sesión válida'
+        );
+
+      }
+
+
+      token =
+        data.access_token;
+
+
+      sessionStorage.setItem(
+        'trAdminToken',
+        token
+      );
+
+
+      $('#loginMsg').textContent =
+        '';
+
+
+      $('#pass').value =
+        '';
+
+
+      screen(true);
+
+
+      await load();
+
+
+    }catch(error){
+
+
+      token = '';
+
+
+      sessionStorage.removeItem(
+        'trAdminToken'
+      );
+
+
+      screen(false);
+
+
+      $('#loginMsg').textContent =
+        error.message;
+
+
+    }finally{
+
+
+      button.disabled =
+        false;
+
+    }
+
+  };
+
 
 
 /* =========================
@@ -518,11 +1290,6 @@ $('#logout').onclick = () => {
 
   clearSession();
 
-  /*
-    replaceState evita conservar
-    estados raros de navegación.
-  */
-
   history.replaceState(
     null,
     '',
@@ -532,11 +1299,14 @@ $('#logout').onclick = () => {
 };
 
 
+
 /* =========================
    ACTUALIZAR
 ========================= */
 
-$('#refresh').onclick = load;
+$('#refresh').onclick =
+  load;
+
 
 
 /* =========================
@@ -546,15 +1316,13 @@ $('#refresh').onclick = load;
 async function start(){
 
   if(!token){
+
     screen(false);
+
     return;
+
   }
 
-  /*
-    Si existe un token guardado,
-    primero lo comprobamos cargando
-    pedidos.
-  */
 
   screen(true);
 
@@ -562,7 +1330,9 @@ async function start(){
 
 }
 
+
 start();
+
 </script>
 
 </body>
