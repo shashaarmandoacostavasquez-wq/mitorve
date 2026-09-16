@@ -362,14 +362,17 @@ backendProducts = Array.isArray(productResponse)
  const payload={
    customer_name:name,
    customer_phone:phone,
-   delivery_method:method,
-   district:method==='Delivery'?district:null,
-   address:method==='Delivery'?address:null,
-   delivery_date:date||null,
-   delivery_time:time||null,
+   delivery_address:method==='Delivery'
+     ? [district,address].filter(Boolean).join(' · ')
+     : 'Recojo a coordinar',
+   delivery_notes:[
+     `Entrega: ${method}`,
+     method==='Delivery' && district ? `Distrito: ${district}` : '',
+     date ? `Fecha: ${date}` : '',
+     time ? `Hora: ${time}` : '',
+     note ? `Nota: ${note}` : ''
+   ].filter(Boolean).join(' | '),
    payment_method:payment,
-   delivery_fee:method==='Recojo'?0:fee,
-   notes:note||null,
    items:apiItems
  };
 
@@ -381,7 +384,7 @@ backendProducts = Array.isArray(productResponse)
      body:JSON.stringify(payload)
    });
    const data=await r.json().catch(()=>({}));
-   if(!r.ok)throw new Error(data.error||'No se pudo guardar el pedido');
+   if(!r.ok)throw new Error(data.details ? `${data.error || 'No se pudo guardar el pedido'}: ${data.details}` : (data.error||'No se pudo guardar el pedido'));
    savedOrder=data.order;
  }catch(e){
    console.error(e);
