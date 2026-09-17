@@ -75,6 +75,10 @@
 
 .instagram-float{position:fixed;right:24px;bottom:92px;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#17100c;border:1px solid #b98a55;color:#fff;font-weight:900;font-size:14px;text-decoration:none;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:.2s ease}
 .instagram-float:hover{transform:translateY(-3px) scale(1.04);border-color:#d5a96f}
+
+/* === THE REAL · artesanal 2026 + reseñas === */
+body{background:#f5efe7;color:#2a1a12}
+.topbar{background:#2a160e;color:#f7eadc}.header{background:rgba(250,246,240,.96);border-bottom:1px solid #d8c8b8}.brand,.nav,.nav-actions{color:#2a1a12}.icon{background:#fffaf4;color:#2a1a12;border-color:#d7c4b2}.cartbtn{background:#3a2116}.hero{background:#efe2d3;color:#2a1a12}.hero p{color:#6d5748}.hero-media:after{background:linear-gradient(90deg,#efe2d3 0%,transparent 25%)}.btn{background:#3a2116;color:#fff;border-color:#3a2116}.btn.alt{color:#3a2116;border-color:#3a2116}.trust{color:#715c4e}.categories,.section{background:#f5efe7}.categories{border-color:#dfd1c3}.cat,.card,.feature,.info-card,.faq-item{background:#fffaf5;color:#2a1a12;border-color:#dfd0c1;box-shadow:0 8px 28px rgba(70,42,25,.06)}.chip{background:#fffaf5;color:#3a2116;border-color:#d8c6b5}.chip.active{background:#6d4129;color:#fff;border-color:#6d4129}.body{background:#fffaf5}.card p,.head p,.feature span,.info-card p,.faq-a{color:#786457}.pic{background:#ead8c4}.pic:before,.pic:after{display:none}.pic img{width:100%;height:100%;margin:0;border:0;border-radius:14px;filter:saturate(.82) contrast(.98);box-shadow:none}.footer{background:#2a160e}.reviews-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:20px}.review-form,.reviews-list{background:#fffaf5;border:1px solid #dfd0c1;border-radius:22px;padding:22px}.review-form input,.review-form textarea,.review-form select{background:#fff;color:#2a1a12;border-color:#d8c6b5}.review-form button{margin-top:12px}.review-card{padding:16px 0;border-bottom:1px solid #eadfd4}.review-card:last-child{border-bottom:0}.review-head{display:flex;justify-content:space-between;gap:12px}.review-stars{color:#9a642f;letter-spacing:2px}.review-date{font-size:11px;color:#9a887b}.review-empty{color:#786457}.reviews-note{font-size:11px;color:#8b786a;margin-top:10px}@media(max-width:760px){.reviews-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -82,7 +86,7 @@
 <header class="header">
   <div class="wrap navrow">
     <a class="brand" href="#inicio">THE REAL<small>CHOCOTEJAS PREMIUM</small></a>
-    <nav class="nav"><a href="#sabores">Sabores</a><a href="#boxes">Boxes & Regalos</a><a href="#favoritos">Favoritos</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas</a><a href="javascript:void(0)" onclick="openOrders()">Mis pedidos</a></nav>
+    <nav class="nav"><a href="#sabores">Sabores</a><a href="#boxes">Boxes & Regalos</a><a href="#favoritos">Favoritos</a><a href="#nosotros">Nosotros</a><a href="#resenas">Reseñas</a><a href="#faq">Preguntas</a><a href="javascript:void(0)" onclick="openOrders()">Mis pedidos</a></nav>
     <div class="nav-actions"><button class="icon" onclick="toggleSearch()" aria-label="Buscar">⌕</button><button class="icon" onclick="showFavorites()" aria-label="Favoritos">♡</button><button class="cartbtn" onclick="toggleCart()">🛒 <span class="badge" id="cartCount">0</span></button></div>
   </div>
   <div class="wrap searchbar" id="searchbar"><input id="searchInput" oninput="renderProducts()" placeholder="Buscar Oreo, fresa, pecana, maracuyá..."></div>
@@ -128,6 +132,20 @@
     <article class="info-card"><div class="eyebrow">CONSERVACIÓN</div><h3>Mejor experiencia de sabor</h3><p>Conservar en un lugar fresco, seco y protegido del sol. Si el ambiente es muy cálido, refrigerar en un recipiente cerrado y dejar atemperar antes de consumir.</p></article>
     <article class="info-card"><div class="eyebrow">ALÉRGENOS</div><h3>Compra informada</h3><p>Algunos sabores pueden contener leche, soya, gluten, maní, pecanas u otros frutos secos. Consulta por WhatsApp si necesitas confirmar un ingrediente antes de ordenar.</p></article>
     <article class="info-card"><div class="eyebrow">PEDIDOS</div><h3>Confirmación directa</h3><p>Cada pedido genera un código THE REAL y se prepara para enviarse por WhatsApp. Los pagos por Yape o Plin quedan pendientes hasta que el negocio los confirme.</p></article>
+  </div>
+</div></section>
+
+<section class="section" id="resenas"><div class="wrap">
+  <div class="head"><div><div class="eyebrow">CLIENTES THE REAL</div><h2>Reseñas de verdad.</h2></div><p>Opiniones publicadas por clientes. No mostramos reseñas inventadas ni puntuaciones de relleno.</p></div>
+  <div class="reviews-wrap">
+    <form class="review-form" id="reviewForm" onsubmit="submitReview(event)">
+      <h3 class="serif" style="font-size:27px;margin:0 0 14px">Cuéntanos qué te pareció</h3>
+      <label class="lbl" for="reviewName">Nombre</label><input id="reviewName" maxlength="40" required placeholder="Tu nombre">
+      <label class="lbl" for="reviewRating">Puntuación</label><select id="reviewRating"><option value="5">★★★★★ · Excelente</option><option value="4">★★★★☆ · Muy bueno</option><option value="3">★★★☆☆ · Bueno</option><option value="2">★★☆☆☆ · Regular</option><option value="1">★☆☆☆☆ · Malo</option></select>
+      <label class="lbl" for="reviewText">Reseña</label><textarea id="reviewText" maxlength="500" rows="4" required placeholder="¿Qué sabor probaste? ¿Cómo llegó tu pedido?"></textarea>
+      <button class="btn" type="submit">PUBLICAR RESEÑA</button><div class="reviews-note">Las reseñas se guardan en este dispositivo. Para hacerlas públicas entre todos los clientes, el siguiente paso es conectarlas a Supabase.</div>
+    </form>
+    <div class="reviews-list"><div id="reviewsList"></div></div>
   </div>
 </div></section>
 <section class="section" id="faq"><div class="wrap">
@@ -528,5 +546,16 @@ async function syncProductsFromBackend(){
   renderProducts();updateCart();
 }
 syncProductsFromBackend();
+
+// Reseñas locales: funcionales sin alterar pedidos ni checkout.
+let reviews=JSON.parse(localStorage.getItem('trReviews')||'[]');
+function escReview(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderReviews(){
+ const el=$('reviewsList'); if(!el)return;
+ if(!reviews.length){el.innerHTML='<div class="review-empty"><strong>Aún no hay reseñas.</strong><p>Sé la primera persona en contar cómo fue tu pedido.</p></div>';return}
+ el.innerHTML=reviews.slice().reverse().map(r=>`<article class="review-card"><div class="review-head"><strong>${escReview(r.name)}</strong><span class="review-date">${new Date(r.date).toLocaleDateString('es-PE')}</span></div><div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><p>${escReview(r.text)}</p></article>`).join('');
+}
+function submitReview(e){e.preventDefault();const name=$('reviewName').value.trim(),text=$('reviewText').value.trim(),rating=Number($('reviewRating').value);if(name.length<2||text.length<8){toast('Completa tu reseña');return}reviews.push({name:name.slice(0,40),text:text.slice(0,500),rating:Math.max(1,Math.min(5,rating)),date:new Date().toISOString()});localStorage.setItem('trReviews',JSON.stringify(reviews));e.target.reset();renderReviews();toast('Gracias por tu reseña')}
+renderReviews();
 </script>
 </body></html>
