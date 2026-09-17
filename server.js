@@ -373,8 +373,13 @@ app.post('/api/orders', async (req, res) => {
     const total = subtotal + shipping;
 const allowedPayments = ['cash', 'yape', 'plin'];
 
-const paymentMethod = allowedPayments.includes(body.payment_method)
-  ? body.payment_method: paymentMethod,
+const requestedPayment =
+  String(body.payment_method || '').trim().toLowerCase();
+
+const paymentMethod =
+  allowedPayments.includes(requestedPayment)
+    ? requestedPayment
+    : 'cash';
     const { data: order, error: orderError } =
       await db
         .from('orders')
