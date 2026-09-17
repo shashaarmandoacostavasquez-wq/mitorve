@@ -155,7 +155,7 @@
 <div><label class="lbl">Nombre completo</label><input id="name" maxlength="60" autocomplete="name"></div>
 <div><label class="lbl">Teléfono</label><input id="phone" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="Ej.: 920 579 782"></div>
 <div class="full"><label class="lbl">Modalidad</label><select id="method" onchange="updateAddress();updateCheckoutSummary()"><option>Delivery</option><option>Recojo</option></select></div>
-<div id="districtWrap"><label class="lbl">Distrito</label><select id="district" onchange="updateCheckoutSummary()"><option value="">Selecciona distrito</option><option>Miraflores</option><option>San Isidro</option><option>Surco</option><option>San Borja</option><option>Barranco</option><option>La Molina</option><option>Jesús María</option><option>Magdalena</option><option>Pueblo Libre</option><option value="Otro">Otro distrito</option></select></div>
+<div id="districtWrap"><label class="lbl">Distrito</label><select id="district" onchange="updateCheckoutSummary()"><option value="">Selecciona distrito</option><option>Cercado de Lima</option><option>Breña</option><option>La Victoria</option><option>Lince</option><option>Jesús María</option><option>Rímac</option><option>Pueblo Libre</option><option>Magdalena</option><option>San Isidro</option><option>San Luis</option><option>San Miguel</option><option>Miraflores</option><option>Surquillo</option><option>San Borja</option><option>Santa Anita</option><option>El Agustino</option><option>Surco</option><option>San Martín de Porres</option><option>Independencia</option><option>Los Olivos</option><option>Ate</option><option>Chorrillos</option><option>Otro</option></select></div>
 <div id="addressWrap"><label class="lbl">Dirección y referencia</label><input id="address" maxlength="170" autocomplete="street-address"></div>
 <div><label class="lbl">Fecha de entrega</label><input id="date" type="date"></div>
 <div><label class="lbl">Horario aproximado</label><select id="time"><option>9:00–12:00</option><option>12:00–15:00</option><option>15:00–18:00</option><option>18:00–21:00</option></select></div>
@@ -275,7 +275,31 @@ function cartQty(i,d){
 function productIndexByName(name){return products.findIndex(p=>p.name===name)}function removeCart(i){cart.splice(i,1);save();updateCart()}
 function toggleCart(){$('cartOverlay').classList.toggle('open');updateCart()}
 function openModal(id){$(id).classList.add('open');document.body.style.overflow='hidden'}function closeModal(id){$(id).classList.remove('open');document.body.style.overflow=''}
-const deliveryFees={'Miraflores':8,'San Isidro':8,'Surco':10,'San Borja':9,'Barranco':9,'La Molina':12,'Jesús María':9,'Magdalena':9,'Pueblo Libre':10,'Otro':15};
+const deliveryFees={
+  'Cercado de Lima':10,
+  'Breña':10,
+  'La Victoria':10,
+  'Lince':10,
+  'Jesús María':10,
+  'Rímac':10,
+  'Pueblo Libre':12,
+  'Magdalena':12,
+  'San Isidro':12,
+  'San Luis':12,
+  'San Miguel':15,
+  'Miraflores':15,
+  'Surquillo':15,
+  'San Borja':15,
+  'Santa Anita':15,
+  'El Agustino':15,
+  'Surco':18,
+  'San Martín de Porres':18,
+  'Independencia':18,
+  'Los Olivos':20,
+  'Ate':20,
+  'Chorrillos':22,
+  'Otro':25
+};
 function cartSubtotal(){return cart.reduce((s,x)=>s+x.price*x.qty,0)}
 function deliveryFee(){
  if($('method')?.value==='Recojo')return 0;
