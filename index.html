@@ -157,6 +157,51 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:900px){.section{padding-top:42px!important;padding-bottom:42px!important}.ordersbtn{display:inline-flex;align-items:center;padding:0 10px;font-size:10px}.instagram-float{display:none!important}.whatsapp-float{width:48px!important;height:48px!important;right:12px!important;bottom:12px!important;font-size:20px!important}.checkout-pro{padding:18px 14px!important}.checkout-panel{padding:12px!important}}
 @media(max-width:620px){.nav-actions .icon{display:none!important}.ordersbtn{max-width:86px;overflow:hidden;text-overflow:ellipsis}.success-actions{grid-template-columns:1fr}.success-actions .checkout{grid-column:auto}.checkout-pro>h2{font-size:24px!important}.checkout-sub{font-size:11px}.payment-cards{gap:6px!important}.checkout-panel textarea{min-height:68px!important}}
 @media(prefers-reduced-motion:reduce){.whatsapp-confirm,.ordersbtn,.hero-actions .btn{transition:none!important}.whatsapp-confirm.is-loading span{animation:none!important}}
+
+/* === THE REAL · ÚLTIMO PULIDO MÓVIL === */
+/* Objetivos: mejor tactilidad, pagos legibles, pedidos visibles y checkout sin flotantes encima. */
+@media(max-width:760px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+  .card h3{font-size:14px!important;line-height:1.3!important;min-height:36px}
+  .card p{font-size:11.5px!important;line-height:1.45!important}
+  .bottom{gap:8px!important}
+  .add{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;display:grid!important;place-items:center!important}
+  .qty button,.qtybig button,.cartbtn,.ordersbtn,.modal-close{min-width:44px!important;min-height:44px!important}
+  .ordersbtn{max-width:none!important;width:auto!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;padding:0 12px!important;font-size:10px!important}
+  .nav-actions{gap:7px!important}
+  .payment-cards{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .payment-cards .pay{min-height:64px!important;padding:10px!important;text-align:left!important}
+  .payment-cards .pay:nth-child(3){grid-column:1/-1!important}
+  .checkout-pro .checkout{min-height:48px!important;font-size:12px!important}
+  .checkout-panel input,.checkout-panel select,.checkout-panel textarea{min-height:44px!important;font-size:16px!important}
+  #checkoutModal.open ~ .whatsapp-float,
+  #productModal.open ~ .whatsapp-float,
+  #ordersModal.open ~ .whatsapp-float,
+  #successModal.open ~ .whatsapp-float{display:none!important}
+}
+@media(max-width:520px){
+  .grid{grid-template-columns:1fr!important;gap:14px!important}
+  .pic{height:300px!important}
+  .pic img{height:100%!important}
+  .card h3{font-size:15px!important;min-height:0!important}
+  .card p{font-size:12px!important}
+  .price{font-size:17px!important}
+  .ordersbtn{font-size:9px!important;padding:0 9px!important}
+  .cartbtn{padding:0 11px!important}
+  .payment-cards{grid-template-columns:1fr 1fr!important}
+  .payment-cards .pay:nth-child(3){grid-column:1/-1!important}
+  .pay-copy small{font-size:9px!important;line-height:1.35!important}
+  .checkout-pro{padding:14px 10px!important}
+  .checkout-panel{padding:11px!important}
+  .checkout-steps{overflow-x:auto!important;justify-content:flex-start!important;padding-bottom:4px!important}
+  .step{flex:0 0 auto!important}
+}
+@media(max-width:380px){
+  .payment-cards{grid-template-columns:1fr!important}
+  .payment-cards .pay:nth-child(3){grid-column:auto!important}
+  .brand{font-size:21px!important;letter-spacing:3px!important}
+  .ordersbtn{font-size:8.5px!important;padding:0 8px!important}
+}
 </style>
 
 </head>
@@ -286,7 +331,7 @@ function setFilter(f,btn){filter=f;if(btn){document.querySelectorAll('.chip').fo
 function renderProducts(){
  let q=($('searchInput')?.value||'').toLowerCase();
  let list=products.map((p,i)=>({...p,i})).filter(p=>(filter==='Todos'||p.key===filter)&&(`${p.name} ${p.desc}`.toLowerCase().includes(q)));
- $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">CHOCOTEJA PREMIUM</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stockline"><span class="stockdot ${p.stock<=18?'low':''}"></span>${p.stock<=18?'Pocas unidades para esta producción':'Disponible para pedido'} · ${p.stock} unidades</div><div class="bottom"><span class="price">Desde S/ ${money(p.base)}</span><button class="add" onclick="openProduct(${p.i})">PERSONALIZAR</button></div></div></article>`).join('');
+ $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">CHOCOTEJA PREMIUM</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stockline"><span class="stockdot ${p.stock<=18?'low':''}"></span>${p.stock<=18?'Pocas unidades para esta producción':'Disponible para pedido'} · ${p.stock} unidades</div><div class="bottom"><span class="price">Desde S/ ${money(p.base)}</span><button class="add" aria-label="Personalizar ${p.name}" onclick="openProduct(${p.i})">PERSONALIZAR</button></div></div></article>`).join('');
 }
 function toggleFav(name){favorites.includes(name)?favorites=favorites.filter(x=>x!==name):favorites.push(name);save();renderProducts();toast(favorites.includes(name)?'Guardado en favoritos':'Quitado de favoritos')}
 function showFavorites(){filter='Todos';$('searchInput').value='';renderProducts();location.hash='sabores';toast(favorites.length?`Tienes ${favorites.length} favorito(s)`:'Aún no tienes favoritos')}
@@ -308,7 +353,7 @@ function openProduct(i){config={product:i,pack:2,cover:'Chocolate de leche',qty:
 function openBoxBuilder(){config={product:0,pack:8,cover:'Chocolate de leche',qty:1,extras:['box'],message:''};renderProductModal(true);openModal('productModal')}
 function renderProductModal(boxMode=false){
  const p=products[config.product];
- $('productModalContent').innerHTML=`<div class="product-top"><div class="product-photo-stage"><img src="${boxMode?IMG.box:p.img}" alt="${p.name} en caja THE REAL"></div><div class="product-info"><div class="eyebrow">${boxMode?'BOX PERSONALIZADO':'EXPERIENCIA DE COMPRA'}</div><h2>${boxMode?'Box THE REAL':p.name}</h2><p>${boxMode?'Crea una presentación premium para compartir o regalar.':p.desc}</p>${boxMode?'':`<div class="notice" style="margin-top:14px"><strong>Alérgenos:</strong> ${p.allergens}. Si tienes una alergia alimentaria, consulta antes de comprar.</div>`}<div class="price-big">S/ ${money(p.base)} <small style="font-size:13px;font-weight:700;color:var(--muted)">c/u</small></div><div class="unit-price-note">Compra mínima: Dúo de 2. El total de la presentación se calcula abajo.</div><div class="qtybig"><button onclick="changeConfigQty(-1)">−</button><strong id="qv">${config.qty}</strong><button class="plus" onclick="changeConfigQty(1)">+</button></div></div></div>
+ $('productModalContent').innerHTML=`<div class="product-top"><div class="product-photo-stage"><img src="${boxMode?IMG.box:p.img}" alt="${p.name} en caja THE REAL"></div><div class="product-info"><div class="eyebrow">${boxMode?'BOX PERSONALIZADO':'EXPERIENCIA DE COMPRA'}</div><h2>${boxMode?'Box THE REAL':p.name}</h2><p>${boxMode?'Crea una presentación premium para compartir o regalar.':p.desc}</p>${boxMode?'':`<div class="notice" style="margin-top:14px"><strong>Alérgenos:</strong> ${p.allergens}. Si tienes una alergia alimentaria, consulta antes de comprar.</div>`}<div class="price-big">S/ ${money(p.base)} <small style="font-size:13px;font-weight:700;color:var(--muted)">c/u</small></div><div class="unit-price-note">Compra mínima: Dúo de 2. El total de la presentación se calcula abajo.</div><div class="qtybig"><button aria-label="Disminuir cantidad" onclick="changeConfigQty(-1)">−</button><strong id="qv">${config.qty}</strong><button class="plus" aria-label="Aumentar cantidad" onclick="changeConfigQty(1)">+</button></div></div></div>
  <div class="config">
  <div class="option-title"><strong>1. Presentación</strong><span>elige cuántas chocotejas incluye</span></div><div class="options">${[2,4,8].map(n=>`<button class="opt ${config.pack===n?'active':''}" onclick="setPack(${n})"><b>${n===2?'Dúo de 2':'Box de '+n}</b><small>${n+' chocotejas'} · S/ ${money(p.base*n)} · ${packLimitText(n)}</small></button>`).join('')}</div>
  <div class="option-title"><strong>2. Cobertura</strong><span>selecciona el chocolate</span></div><div class="options">${['Chocolate de leche','Chocolate bitter','Chocolate blanco'].map(x=>`<button class="opt ${config.cover===x?'active':''}" onclick="setCover('${x}')"><b>${x}</b><small>Sin costo extra</small></button>`).join('')}</div>
@@ -341,7 +386,7 @@ function addConfigured(buyNow){
  save();updateCart();closeModal('productModal');toast('Agregado al carrito');
  if(buyNow){toggleCart();setTimeout(openCheckout,250)}
 }
-function updateCart(){$('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0);$('cartItems').innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-item"><img src="${x.img}"><div><strong>${x.name}</strong><div style="font-size:11px;color:#786b62">Pack ${x.pack} · ${x.cover}${x.extras.length?' · '+x.extras.join(', '):''}</div><div class="qty"><button onclick="cartQty(${i},-1)">−</button><b>${x.qty}</b><button onclick="cartQty(${i},1)">+</button></div></div><div style="text-align:right"><strong>S/ ${money(x.price*x.qty)}</strong><br><button class="remove" onclick="removeCart(${i})">Eliminar</button></div></div>`).join(''):'<p style="color:#777">Tu carrito está vacío.</p>';const t=cart.reduce((s,x)=>s+x.price*x.qty,0);$('sub').textContent=money(t);$('total').textContent=money(t)}
+function updateCart(){$('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0);$('cartItems').innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-item"><img src="${x.img}" alt="${x.name}"><div><strong>${x.name}</strong><div style="font-size:11px;color:#786b62">Pack ${x.pack} · ${x.cover}${x.extras.length?' · '+x.extras.join(', '):''}</div><div class="qty"><button aria-label="Disminuir cantidad de ${x.name}" onclick="cartQty(${i},-1)">−</button><b>${x.qty}</b><button aria-label="Aumentar cantidad de ${x.name}" onclick="cartQty(${i},1)">+</button></div></div><div style="text-align:right"><strong>S/ ${money(x.price*x.qty)}</strong><br><button class="remove" onclick="removeCart(${i})">Eliminar</button></div></div>`).join(''):'<p style="color:#777">Tu carrito está vacío.</p>';const t=cart.reduce((s,x)=>s+x.price*x.qty,0);$('sub').textContent=money(t);$('total').textContent=money(t)}
 function cartQty(i,d){
  const item=cart[i];if(!item)return;
  if(d>0){
