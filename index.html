@@ -385,7 +385,8 @@ backendProducts = Array.isArray(productResponse)
 
  const payload={
    customer_name:name,
-   customer_phone:phone,
+   customer_phone:phone,delivery_method: method,
+district: district,
    delivery_address:method==='Delivery'
      ? [district,address].filter(Boolean).join(' · ')
      : 'Recojo a coordinar',
