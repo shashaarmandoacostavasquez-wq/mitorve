@@ -123,6 +123,42 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:520px){.checkout-pro{width:100%!important;max-height:97vh!important;padding:18px 12px!important}.checkout-pro>h2{font-size:25px!important}.step{min-width:48px;font-size:8px}.step b{width:22px;height:22px}.checkout-steps i{margin-top:11px}.checkout-panel{padding:12px}.checkout-panel .formgrid{grid-template-columns:1fr!important}.checkout-panel .formgrid .full{grid-column:auto!important}}
 
 </style>
+
+<style id="the-real-final-polish">
+/* === THE REAL · PULIDO FINAL === */
+:root{--tr-gold:#e5b568;--tr-gold2:#f3ca85;--tr-panel:#0d0e0d;--tr-line:#2d2e2b}
+.section{padding-top:52px!important;padding-bottom:52px!important}
+.hero-actions .btn:first-child{background:linear-gradient(90deg,var(--tr-gold),var(--tr-gold2))!important;color:#14110c!important;border-color:transparent!important;box-shadow:0 12px 34px rgba(229,181,104,.19)!important}
+.hero-actions .btn.alt{background:transparent!important;color:#dfd7cc!important;border:1px solid #4a4137!important;box-shadow:none!important}
+.ordersbtn{height:40px;padding:0 13px;border:1px solid #4b3a27;border-radius:7px;background:#11120f;color:#e8d6b9;font-size:11px;font-weight:850;cursor:pointer;transition:.18s ease;white-space:nowrap}
+.ordersbtn:hover{border-color:var(--tr-gold);color:#fff;transform:translateY(-1px)}
+
+/* Checkout más compacto y con jerarquía más clara */
+.checkout-pro{width:min(980px,96vw)!important;padding:22px 26px 18px!important}
+.checkout-brand{margin-bottom:10px!important}.checkout-pro>h2{font-size:28px!important}.checkout-sub{margin-bottom:13px!important}
+.checkout-pro .checkout-shell{gap:12px!important}.checkout-left,.checkout-right{gap:9px!important}.checkout-panel{padding:13px!important}.checkout-panel h3{margin-bottom:10px!important}
+.delivery-choice{margin-bottom:9px!important}.checkout-pro .pay{padding:7px 9px!important}.checkout-pro .notice{margin-top:6px!important}
+.whatsapp-confirm{min-height:46px;font-size:12.5px!important;box-shadow:0 11px 32px rgba(229,181,104,.18)!important;transition:.2s ease!important}
+.whatsapp-confirm:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.whatsapp-confirm:disabled{opacity:.72;cursor:wait;transform:none!important}.whatsapp-confirm.is-loading span{display:inline-block;animation:trSpin .9s linear infinite}
+@keyframes trSpin{to{transform:rotate(360deg)}}
+.secure-note{line-height:1.45;max-width:370px;margin-left:auto;margin-right:auto}.checkout-pro>.policy-note{line-height:1.45;max-width:790px;margin-left:auto!important;margin-right:auto!important}
+
+/* Confirmación: el cliente entiende qué se guardó y puede recuperar WhatsApp */
+.success-card{text-align:left!important;border:1px solid #31322e!important;background:#0b0c0b!important}
+.success-eyebrow{color:#88d3a5!important}.success-copy{color:#c2bbb1!important;line-height:1.65;margin:12px 0}.success-notice{font-size:11px!important;line-height:1.55!important;padding:12px!important}
+.success-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.success-actions .checkout{grid-column:1/-1;margin:0!important;min-height:46px}
+.success-secondary{min-height:41px;border:1px solid #3c3d39;border-radius:6px;background:#11120f;color:#ddd;font-weight:800;font-size:10px;cursor:pointer}.success-secondary:hover{border-color:var(--tr-gold);color:#fff}
+
+/* El acceso a pedidos deja de pasar desapercibido */
+.nav a[onclick*="openOrders"]{color:#f0c47e!important;font-weight:800}.footer a[onclick*="openOrders"]{color:#e7bd79!important;font-weight:800}
+
+/* Menos ruido flotante, sobre todo en móvil */
+@media(max-width:900px){.section{padding-top:42px!important;padding-bottom:42px!important}.ordersbtn{display:inline-flex;align-items:center;padding:0 10px;font-size:10px}.instagram-float{display:none!important}.whatsapp-float{width:48px!important;height:48px!important;right:12px!important;bottom:12px!important;font-size:20px!important}.checkout-pro{padding:18px 14px!important}.checkout-panel{padding:12px!important}}
+@media(max-width:620px){.nav-actions .icon{display:none!important}.ordersbtn{max-width:86px;overflow:hidden;text-overflow:ellipsis}.success-actions{grid-template-columns:1fr}.success-actions .checkout{grid-column:auto}.checkout-pro>h2{font-size:24px!important}.checkout-sub{font-size:11px}.payment-cards{gap:6px!important}.checkout-panel textarea{min-height:68px!important}}
+@media(prefers-reduced-motion:reduce){.whatsapp-confirm,.ordersbtn,.hero-actions .btn{transition:none!important}.whatsapp-confirm.is-loading span{animation:none!important}}
+</style>
+
 </head>
 <body>
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
@@ -130,7 +166,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   <div class="wrap navrow">
     <a class="brand" href="#inicio">THE REAL<small>CHOCOTEJAS PREMIUM</small></a>
     <nav class="nav"><a href="#sabores">Sabores</a><a href="#boxes">Boxes & Regalos</a><a href="#resenas">Reseñas</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas</a><a href="javascript:void(0)" onclick="openOrders()">Mis pedidos</a></nav>
-    <div class="nav-actions"><button class="icon" onclick="toggleSearch()" aria-label="Buscar">⌕</button><button class="icon" onclick="showFavorites()" aria-label="Favoritos">♡</button><button class="cartbtn" onclick="toggleCart()">🛒 <span class="badge" id="cartCount">0</span></button></div>
+    <div class="nav-actions"><button class="icon" onclick="toggleSearch()" aria-label="Buscar">⌕</button><button class="icon" onclick="showFavorites()" aria-label="Favoritos">♡</button><button class="ordersbtn" onclick="openOrders()" aria-label="Ver mis pedidos">Mis pedidos</button><button class="cartbtn" onclick="toggleCart()">🛒 <span class="badge" id="cartCount">0</span></button></div>
   </div>
   <div class="wrap searchbar" id="searchbar"><input id="searchInput" oninput="renderProducts()" placeholder="Buscar Oreo, fresa, pecana, maracuyá..."></div>
 </header>
@@ -209,10 +245,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 <aside class="checkout-right">
 <section class="checkout-panel pay-panel"><h3><em>3.</em> Método de pago</h3><div class="payment-cards"><button type="button" class="pay active" data-pay="Yape" onclick="selectPay(this)"><span class="pay-logo yape-logo">yape</span><span class="pay-copy"><strong>Yape</strong><small>Pago rápido al 920 579 782</small></span><span class="radio-dot"></span></button><button type="button" class="pay" data-pay="Plin" onclick="selectPay(this)"><span class="pay-logo plin-logo">plin</span><span class="pay-copy"><strong>Plin</strong><small>Pago rápido al 920 579 782</small></span><span class="radio-dot"></span></button><button type="button" class="pay" data-pay="Efectivo" onclick="selectPay(this)"><span class="pay-logo cash-logo">▣</span><span class="pay-copy"><strong>Efectivo</strong><small>Paga al recibir o recoger tu pedido</small></span><span class="radio-dot"></span></button></div><div class="notice" id="payHelp">Yapea al 920 579 782. El pedido queda pendiente hasta confirmar el pago.</div></section>
-<section class="checkout-panel summary-panel"><h3><em>4.</em> Resumen del pedido</h3><div id="checkoutItems"></div><div class="checkout-mini"><span>Subtotal</span><strong>S/ <span id="checkoutSubtotal">0.00</span></strong></div><div class="checkout-mini"><span>Delivery</span><strong id="checkoutDelivery">—</strong></div><div class="checkout-mini checkout-grand"><span>Total</span><strong>S/ <span id="checkoutTotal">0.00</span></strong></div><div class="notice" id="deliveryNotice">Selecciona distrito para calcular el delivery.</div><button class="checkout whatsapp-confirm" onclick="sendOrder()"><span>◉</span> Confirmar pedido por WhatsApp</button><div class="secure-note">🔒 Tus datos están seguros con nosotros.</div></section>
-</aside></div><div class="policy-note">Al confirmar se genera un código de pedido y se abre WhatsApp con el resumen completo. Yape y Plin quedan pendientes hasta que THE REAL confirme el pago.</div></div></div>
+<section class="checkout-panel summary-panel"><h3><em>4.</em> Resumen del pedido</h3><div id="checkoutItems"></div><div class="checkout-mini"><span>Subtotal</span><strong>S/ <span id="checkoutSubtotal">0.00</span></strong></div><div class="checkout-mini"><span>Delivery</span><strong id="checkoutDelivery">—</strong></div><div class="checkout-mini checkout-grand"><span>Total</span><strong>S/ <span id="checkoutTotal">0.00</span></strong></div><div class="notice" id="deliveryNotice">Selecciona distrito para calcular el delivery.</div><button class="checkout whatsapp-confirm" id="confirmOrderBtn" onclick="sendOrder()"><span>◉</span> Confirmar pedido y continuar a WhatsApp</button><div class="secure-note">🔒 Primero registramos tu pedido de forma segura; luego abrimos WhatsApp con el resumen.</div></section>
+</aside></div><div class="policy-note">Al confirmar, tu pedido se guarda primero en THE REAL y se genera un código. Después intentamos abrir WhatsApp con el resumen. Si el navegador lo bloquea, podrás abrirlo nuevamente sin perder el pedido. Yape y Plin quedan pendientes hasta que THE REAL confirme el pago.</div></div></div>
 <div class="modal" id="ordersModal"><div class="modal-card checkout-card"><button class="modal-close" onclick="closeModal('ordersModal')">×</button><div class="eyebrow">EN ESTE DISPOSITIVO</div><h2>Mis pedidos</h2><p style="color:var(--muted)">Aquí aparecen los pedidos preparados desde este navegador.</p><div id="ordersList" class="orders-list"></div></div></div>
-<div class="modal" id="successModal"><div class="modal-card checkout-card" style="max-width:560px"><button class="modal-close" onclick="closeModal('successModal')">×</button><div class="eyebrow">PEDIDO PREPARADO</div><h2>Tu código es <span class="order-code" id="successCode"></span></h2><p style="color:var(--muted)">Se abrió WhatsApp con el resumen. Envía el mensaje para que THE REAL pueda confirmar tu pedido.</p><div class="notice">Guarda tu código. Te servirá para identificar el pedido en cualquier conversación.</div><button class="checkout" onclick="copyOrderCode()">COPIAR CÓDIGO</button></div></div>
+<div class="modal" id="successModal"><div class="modal-card checkout-card success-card" style="max-width:560px"><button class="modal-close" onclick="closeModal('successModal')">×</button><div class="eyebrow success-eyebrow">✓ PEDIDO REGISTRADO</div><h2>Tu código es <span class="order-code" id="successCode"></span></h2><p class="success-copy">Tu pedido ya quedó guardado en THE REAL. WhatsApp solo se usa para enviarnos el resumen y continuar la coordinación.</p><div class="notice success-notice">Aunque cierres esta página o WhatsApp no se abra, el pedido seguirá registrado. Guarda tu código para identificarlo.</div><div class="success-actions"><button class="checkout" onclick="reopenWhatsApp()">◉ ABRIR WHATSAPP NUEVAMENTE</button><button class="success-secondary" onclick="openOrders();closeModal('successModal')">VER MIS PEDIDOS</button><button class="success-secondary" onclick="copyOrderCode()">COPIAR CÓDIGO</button></div></div></div>
 
 
 <div class="toast" id="toast"></div>
@@ -241,6 +277,7 @@ cart = Array.isArray(cart) ? cart.filter(x=>x && x.name).map(x=>({
 })) : [];
 localStorage.setItem('trCart',JSON.stringify(cart));
 let config={product:0,pack:2,cover:'Chocolate de leche',qty:1,extras:[],message:''},payment='Yape';
+let orderSubmitting=false,lastWhatsAppUrl='';
 const $=id=>document.getElementById(id);
 function money(n){return Number(n).toFixed(2)}function toast(t){const x=$('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2200)}
 function save(){localStorage.setItem('trCart',JSON.stringify(cart));localStorage.setItem('trFav',JSON.stringify(favorites));localStorage.setItem('trOrders',JSON.stringify(orders))}
@@ -390,6 +427,19 @@ function selectPay(btn){
 }
 function makeOrderCode(){return 'TR-'+Date.now().toString(36).slice(-6).toUpperCase()}
 function validPhone(v){const n=v.replace(/\D/g,'');return n.length===9||n.length===11}
+function setOrderSubmitting(on){
+ orderSubmitting=on;
+ const btn=$('confirmOrderBtn');
+ if(!btn)return;
+ btn.disabled=on;
+ btn.classList.toggle('is-loading',on);
+ btn.innerHTML=on?'<span>◌</span> Registrando pedido…':'<span>◉</span> Confirmar pedido y continuar a WhatsApp';
+}
+function reopenWhatsApp(){
+ if(!lastWhatsAppUrl){toast('No hay un WhatsApp pendiente para abrir.');return}
+ const w=window.open(lastWhatsAppUrl,'_blank','noopener,noreferrer');
+ if(!w)toast('El navegador bloqueó la nueva pestaña. Permite ventanas emergentes o usa el botón flotante de WhatsApp.');
+}
 async function sendOrder(){
  const name=$('name').value.trim(),phone=$('phone').value.trim(),method=$('method').value,address=$('address').value.trim(),district=$('district').value,date=$('date').value,time=$('time').value,note=$('orderNote').value.trim();
  if(name.length<2){toast('Escribe tu nombre completo');$('name').focus();return}
@@ -397,6 +447,17 @@ async function sendOrder(){
  if(!date){toast('Elige una fecha de entrega');return}
  if(method==='Delivery'&&!district){toast('Selecciona el distrito');$('district').focus();return}
  if(method==='Delivery'&&!address){toast('Escribe la dirección de entrega');$('address').focus();return}
+ if(orderSubmitting)return;
+ setOrderSubmitting(true);
+
+ // Abrimos una pestaña vacía mientras el clic del usuario sigue activo.
+ // Después de guardar el pedido la redirigimos a WhatsApp; así reducimos bloqueos de popup.
+ let whatsappWindow=null;
+ try{
+   whatsappWindow=window.open('about:blank','theRealWhatsApp');
+   if(whatsappWindow){try{whatsappWindow.opener=null}catch(_){}}
+ }catch(_){whatsappWindow=null}
+ const closePendingWhatsApp=()=>{try{if(whatsappWindow&&!whatsappWindow.closed)whatsappWindow.close()}catch(_){}};
 
  const sub=cartSubtotal(),fee=deliveryFee(),total=sub+(method==='Recojo'?0:fee);
 
@@ -411,6 +472,8 @@ backendProducts = Array.isArray(productResponse)
   : (productResponse.orders || productResponse.products || productResponse.data || []);
  }catch(e){
    console.error(e);
+   closePendingWhatsApp();
+   setOrderSubmitting(false);
    toast('No se pudo conectar con el servidor de productos.');
    return;
  }
@@ -422,6 +485,8 @@ backendProducts = Array.isArray(productResponse)
  for(const x of cart){
    const bp=byName.get(normalizeName(x.name));
    if(!bp){
+     closePendingWhatsApp();
+     setOrderSubmitting(false);
      toast(`El producto "${x.name}" aún no está registrado en Supabase.`);
      return;
    }
@@ -472,6 +537,8 @@ district: district,
    savedOrder=data.order;
  }catch(e){
    console.error(e);
+   closePendingWhatsApp();
+   setOrderSubmitting(false);
    toast(e.message||'No se pudo guardar el pedido');
    return;
  }
@@ -501,16 +568,21 @@ district: district,
  orders.unshift(localOrder);orders=orders.slice(0,20);save();
 
  const wa='https://wa.me/51920579782?text='+encodeURIComponent(msg);
- const popup=window.open(wa,'_blank','noopener,noreferrer');
+ lastWhatsAppUrl=wa;
+ let whatsappOpened=false;
+ if(whatsappWindow){
+   try{whatsappWindow.location.href=wa;whatsappOpened=true}catch(_){whatsappOpened=false}
+ }
 
  $('successCode').textContent=code;
  closeModal('checkoutModal');
  openModal('successModal');
 
- if(!popup)toast('Tu navegador bloqueó WhatsApp. Usa el botón flotante para abrirlo.');
- else toast('Pedido guardado y preparado. Envía el mensaje en WhatsApp.');
+ if(!whatsappOpened)toast('Pedido guardado. Si WhatsApp fue bloqueado, usa “Abrir WhatsApp nuevamente”.');
+ else toast('Pedido guardado correctamente. Continúa en WhatsApp para coordinarlo.');
 
  cart=[];save();updateCart();
+ setOrderSubmitting(false);
 }
 function toggleFaq(btn){btn.parentElement.classList.toggle('open');btn.querySelector('span').textContent=btn.parentElement.classList.contains('open')?'−':'+'}
 async function openOrders(){
