@@ -369,8 +369,47 @@ app.post('/api/orders', async (req, res) => {
       });
     }
 
-    const shipping = 0;
-    const total = subtotal + shipping;
+   const deliveryFees = {
+  'Cercado de Lima': 10,
+  'Breña': 10,
+  'La Victoria': 10,
+  'Lince': 10,
+  'Jesús María': 10,
+  'Rímac': 10,
+  'Pueblo Libre': 12,
+  'Magdalena': 12,
+  'San Isidro': 12,
+  'San Luis': 12,
+  'San Miguel': 15,
+  'Miraflores': 15,
+  'Surquillo': 15,
+  'San Borja': 15,
+  'Santa Anita': 15,
+  'El Agustino': 15,
+  'Surco': 18,
+  'San Martín de Porres': 18,
+  'Independencia': 18,
+  'Los Olivos': 20,
+  'Ate': 20,
+  'Chorrillos': 22,
+  'Otro': 25
+};
+
+const deliveryMethod = String(body.delivery_method || '').trim();
+const district = String(body.district || '').trim();
+let shipping = 0;
+
+if (deliveryMethod === 'Delivery') {
+  if (!district || deliveryFees[district] === undefined) {
+    return res.status(400).json({
+      error: 'Distrito de delivery inválido'
+    });
+  }
+
+  shipping = deliveryFees[district];
+}
+
+const total = subtotal + shipping;
 const allowedPayments = ['cash', 'yape', 'plin'];
 
 const requestedPayment =
