@@ -352,11 +352,46 @@ app.post('/api/orders', async (req, res) => {
         });
       }
 
-      const unitPrice =
-        Number(product.price);
+      const presentation =
+        Number(item.presentation);
 
-      subtotal +=
-        unitPrice * quantity;
+      const packPrices = {
+        4: 11,
+        6: 15,
+        8: 20,
+        12: 27
+      };
+
+      let unitPrice;
+
+      if (packPrices[presentation]) {
+        if (
+          quantity % presentation !== 0
+        ) {
+          return res.status(400).json({
+            error: 'Cantidad incompatible con la presentación'
+          });
+        }
+
+        unitPrice =
+          Number(
+            (
+              packPrices[presentation] /
+              presentation
+            ).toFixed(4)
+          );
+
+        subtotal +=
+          packPrices[presentation] *
+          (quantity / presentation);
+      } else {
+        // Compatibilidad con clientes antiguos.
+        unitPrice =
+          Number(product.price);
+
+        subtotal +=
+          unitPrice * quantity;
+      }
 
       safeItems.push({
         product_id: product.id,
