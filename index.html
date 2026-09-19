@@ -424,6 +424,29 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 .review-empty-card{padding:28px!important}
 </style>
 
+
+<style id="anchor-scroll-fix">
+#sabores,#boxes,#resenas,#nosotros,#faq{scroll-margin-top:90px}
+</style>
+
+
+<style id="sabores-polish">
+#sabores .catalog-tools{justify-content:flex-end}
+#sabores .catalog-note{margin-left:auto}
+.price-help{display:block;color:#9a6a25;font-size:10px;font-weight:800;margin-top:4px}
+.sabores-mix-cta{
+  margin-top:22px;background:#fff;border:1px solid #eadfd0;border-radius:18px;
+  padding:18px 20px;display:flex;justify-content:space-between;align-items:center;
+  gap:18px;box-shadow:0 10px 28px rgba(74,45,31,.05)
+}
+.sabores-mix-cta strong{display:block;font:700 23px Georgia,serif;color:#3b2a22}
+.sabores-mix-cta span{display:block;color:#7e6c60;font-size:12px;margin-top:5px}
+@media(max-width:650px){
+  .sabores-mix-cta{flex-direction:column;align-items:stretch}
+  .sabores-mix-cta .btn{width:100%}
+}
+</style>
+
 </head>
 <body>
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
@@ -450,13 +473,16 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 
 <section class="section" id="sabores"><div class="wrap">
   <div class="head"><div><div class="eyebrow">NUESTRA COLECCIÓN</div><h2>Sabores que hablan por ti.</h2></div><p>Elige tu favorito, personaliza la presentación y conviértelo en un regalo hecho a tu medida.</p></div>
-  <div class="filters" id="filters">
-  <button class="chip active" onclick="setFilter('Todos',this)">Todos</button>
-  <button class="chip" onclick="setFilter('Oreo',this)">Oreo</button>
-  <button class="chip" onclick="setFilter('Coco',this)">Coco</button>
-  <button class="chip" onclick="setFilter('Pecana',this)">Pecana</button>
-</div>
+  
   <div class="grid" id="products"></div>
+<div class="sabores-mix-cta">
+  <div>
+    <strong>¿Quieres combinar sabores?</strong>
+    <span>Arma una caja surtida con Oreo, Coco y Pecana.</span>
+  </div>
+  <button class="btn" type="button" onclick="openMixedBox(4)">ARMAR UNA CAJA SURTIDA →</button>
+</div>
+
 </div></section>
 
 <section class="section" id="boxes"><div class="wrap">
@@ -585,7 +611,7 @@ function setFilter(f,btn){filter=f;if(btn){document.querySelectorAll('.chip').fo
 function renderProducts(){
  let q=($('searchInput')?.value||'').toLowerCase();
  let list=products.map((p,i)=>({...p,i})).filter(p=>(filter==='Todos'||p.key===filter)&&(`${p.name} ${p.desc}`.toLowerCase().includes(q)));
- $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">CHOCOTEJA PREMIUM</span><h3>${p.name}</h3><p>${p.desc}</p><div class="pack-line">x4 S/11 · x6 S/15 · x8 S/20 · x12 S/27</div><div class="stockline"><span class="stockdot ${p.stock<=18?'low':''}"></span>Preparada por pedido · Dedicatoria opcional</div><div class="bottom"><span class="price">Desde S/ ${money(PACK_PRICES[4])}</span><button class="add" aria-label="Elegir box de ${p.name}" onclick="openProduct(${p.i})">ELEGIR MI BOX</button></div></div></article>`).join('');
+ $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">${p.key==='Oreo'?'COOKIES & CREAM':p.key==='Coco'?'TROPICAL':'CLÁSICO'}</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stockline"><span class="stockdot ${p.stock<=18?'low':''}"></span>Preparada por pedido · Dedicatoria opcional</div><div class="bottom"><div><span class="price">Desde S/ ${money(PACK_PRICES[4])}</span><small class="price-help">Ver tamaños y precios →</small></div><button class="add" aria-label="Elegir box de ${p.name}" onclick="openProduct(${p.i})">ELEGIR MI BOX</button></div></div></article>`).join('');
 }
 function toggleFav(name){favorites.includes(name)?favorites=favorites.filter(x=>x!==name):favorites.push(name);save();renderProducts();toast(favorites.includes(name)?'Guardado en favoritos':'Quitado de favoritos')}
 function showFavorites(){filter='Todos';$('searchInput').value='';renderProducts();location.hash='sabores';toast(favorites.length?`Tienes ${favorites.length} favorito(s)`:'Aún no tienes favoritos')}
@@ -1053,4 +1079,22 @@ async function syncProductsFromBackend(){
 }
 syncProductsFromBackend();
 </script>
+
+<script id="hash-scroll-fix">
+window.addEventListener("load", () => {
+  const id = window.location.hash;
+  if (id) {
+    setTimeout(() => {
+      const el = document.querySelector(id);
+      if (el) el.scrollIntoView({behavior:"smooth",block:"start"});
+    }, 220);
+  }
+});
+window.addEventListener("hashchange", () => {
+  const id = window.location.hash;
+  const el = id ? document.querySelector(id) : null;
+  if (el) setTimeout(() => el.scrollIntoView({behavior:"smooth",block:"start"}), 60);
+});
+</script>
+
 </body></html>
