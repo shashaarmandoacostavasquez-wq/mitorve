@@ -447,6 +447,19 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 }
 </style>
 
+
+<style id="final-cleanup">
+.add{white-space:nowrap}
+.sabores-mix-cta .btn{white-space:nowrap}
+@media(max-width:560px){
+  .sabores-mix-cta .btn{
+    font-size:10px;
+    padding:12px 10px;
+    white-space:nowrap;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
@@ -611,7 +624,7 @@ function setFilter(f,btn){filter=f;if(btn){document.querySelectorAll('.chip').fo
 function renderProducts(){
  let q=($('searchInput')?.value||'').toLowerCase();
  let list=products.map((p,i)=>({...p,i})).filter(p=>(filter==='Todos'||p.key===filter)&&(`${p.name} ${p.desc}`.toLowerCase().includes(q)));
- $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">${p.key==='Oreo'?'COOKIES & CREAM':p.key==='Coco'?'TROPICAL':'CLÁSICO'}</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stockline"><span class="stockdot ${p.stock<=18?'low':''}"></span>Preparada por pedido · Dedicatoria opcional</div><div class="bottom"><div><span class="price">Desde S/ ${money(PACK_PRICES[4])}</span><small class="price-help">Ver tamaños y precios →</small></div><button class="add" aria-label="Elegir box de ${p.name}" onclick="openProduct(${p.i})">ELEGIR MI BOX</button></div></div></article>`).join('');
+ $('products').innerHTML=list.map(p=>`<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}"><button class="fav ${favorites.includes(p.name)?'on':''}" onclick="toggleFav('${p.name}')">${favorites.includes(p.name)?'♥':'♡'}</button></div><div class="body"><span class="tag">${p.key==='Oreo'?'COOKIES & CREAM':p.key==='Coco'?'TROPICAL':'CLÁSICO'}</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stockline"><span class="stockdot"></span>Preparada por pedido · Dedicatoria opcional</div><div class="bottom"><div><span class="price">Desde S/ ${money(PACK_PRICES[4])}</span><small class="price-help">Ver tamaños y precios →</small></div><button class="add" aria-label="Elegir box de ${p.name}" onclick="openProduct(${p.i})">ELEGIR BOX 🛒</button></div></div></article>`).join('');
 }
 function toggleFav(name){favorites.includes(name)?favorites=favorites.filter(x=>x!==name):favorites.push(name);save();renderProducts();toast(favorites.includes(name)?'Guardado en favoritos':'Quitado de favoritos')}
 function showFavorites(){filter='Todos';$('searchInput').value='';renderProducts();location.hash='sabores';toast(favorites.length?`Tienes ${favorites.length} favorito(s)`:'Aún no tienes favoritos')}
