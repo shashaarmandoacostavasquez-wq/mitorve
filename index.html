@@ -461,6 +461,12 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 </style>
 
 <style id="single-cart-icon-fix">.add::after,.add:after{content:none!important;display:none!important}</style>
+
+<style id="checkout-phone-fix">
+#phone{font-variant-numeric:tabular-nums}
+#phone:invalid:not(:placeholder-shown){border-color:#c9963f!important}
+</style>
+
 </head>
 <body>
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
@@ -580,7 +586,7 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 <h2>Completa tu pedido</h2><p class="checkout-sub">Solo unos pasos más y tus chocotejas estarán en camino.</p>
 <div class="checkout-shell">
 <div class="checkout-left">
-<section class="checkout-panel"><h3><em>1.</em> Información personal</h3><div class="formgrid"><div class="full"><label class="lbl">Nombre completo <sup>*</sup></label><input id="name" maxlength="60" autocomplete="name" placeholder="Tu nombre completo"></div><div><label class="lbl">Teléfono <sup>*</sup></label><input id="phone" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="920 579 782"></div><div><label class="lbl">Correo (opcional)</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"></div></div></section>
+<section class="checkout-panel"><h3><em>1.</em> Información personal</h3><div class="formgrid"><div class="full"><label class="lbl">Nombre completo <sup>*</sup></label><input id="name" maxlength="60" autocomplete="name" placeholder="Tu nombre completo"></div><div><label class="lbl">Teléfono <sup>*</sup></label><input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="11" autocomplete="tel" enterkeyhint="next" pattern="[0-9]{9}|51[0-9]{9}" placeholder="920579782" oninput="handlePhoneInput(this)"></div><div><label class="lbl">Correo (opcional)</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"></div></div></section>
 <section class="checkout-panel"><h3><em>2.</em> Tipo de entrega</h3><div class="delivery-choice"><button type="button" class="delivery-card active" data-method="Delivery" onclick="setDeliveryMethod('Delivery',this)"><span class="delivery-icon">🚚</span><span><strong>Delivery</strong><small>Recibe en la comodidad de tu casa</small></span></button><button type="button" class="delivery-card" data-method="Recojo" onclick="setDeliveryMethod('Recojo',this)"><span class="delivery-icon">▣</span><span><strong>Recojo</strong><small>Coordina tu recojo con THE REAL</small></span></button></div><select id="method" onchange="updateAddress();updateCheckoutSummary();syncDeliveryCards()" class="sr-only-select"><option>Delivery</option><option>Recojo</option></select>
 <div class="formgrid delivery-fields"><div id="districtWrap"><label class="lbl">Distrito <sup>*</sup></label><select id="district" onchange="updateCheckoutSummary()"><option value="">Selecciona distrito</option><option>Cercado de Lima</option><option>Breña</option><option>La Victoria</option><option>Lince</option><option>Jesús María</option><option>Rímac</option><option>Pueblo Libre</option><option>Magdalena</option><option>San Isidro</option><option>San Luis</option><option>San Miguel</option><option>Miraflores</option><option>Surquillo</option><option>San Borja</option><option>Santa Anita</option><option>El Agustino</option><option>Surco</option><option>San Martín de Porres</option><option>Independencia</option><option>Los Olivos</option><option>Ate</option><option>Chorrillos</option><option>Otro</option></select></div><div id="addressWrap"><label class="lbl">Dirección completa <sup>*</sup></label><input id="address" maxlength="170" autocomplete="street-address" placeholder="Av., calle, número, dpto."></div><div><label class="lbl">Fecha de entrega</label><input id="date" type="date"></div><div><label class="lbl">Horario aproximado</label><select id="time"><option>9:00–12:00</option><option>12:00–15:00</option><option>15:00–18:00</option><option>18:00–21:00</option></select></div><div class="full"><label class="lbl">Indicaciones (opcional)</label><textarea id="orderNote" maxlength="220" rows="3" placeholder="Ej.: referencia, color de puerta, tocar el timbre, etc."></textarea></div></div></section>
 </div>
@@ -686,7 +692,8 @@ function renderMixedBox(){
 }
 function addMixedBox(buyNow){
  if(mixTotal()!==mixConfig.pack){toast('Completa la caja antes de continuar.');return}
- cart.push({
+
+ const candidate={
    productIndex:0,
    name:'Caja Surtida',
    img:IMG.boxPremium,
@@ -698,9 +705,30 @@ function addMixedBox(buyNow){
    price:PACK_PRICES[mixConfig.pack],
    mixed:true,
    mix:{...mixConfig.mix}
- });
- save();updateCart();closeModal('productModal');toast('Caja surtida agregada');
- if(buyNow){toggleCart();setTimeout(openCheckout,180)}
+ };
+
+ const existingIndex=cart.findIndex(item=>sameMixedCartItem(item,candidate));
+
+ if(buyNow&&existingIndex>=0){
+   closeModal('productModal');
+   toast('Esa caja surtida ya estaba en tu carrito. No la duplicamos.');
+   setTimeout(openCheckout,120);
+   return;
+ }
+
+ if(existingIndex>=0){
+   const business=({4:4,6:3,8:2,12:2}[candidate.pack]||1);
+   cart[existingIndex].qty=Math.min(
+     business,
+     Number(cart[existingIndex].qty||0)+Number(candidate.qty||1)
+   );
+ }else{
+   cart.push(candidate);
+ }
+
+ save();updateCart();closeModal('productModal');
+ toast(existingIndex>=0?'Cantidad actualizada en el carrito':'Caja surtida agregada');
+ if(buyNow)setTimeout(openCheckout,120)
 }
 
 
@@ -758,13 +786,70 @@ function changeConfigQty(d){
  config.qty=Math.max(1,next);renderProductModal()
 }
 function toggleExtra(e){config.extras.includes(e)?config.extras=config.extras.filter(x=>x!==e):config.extras.push(e);renderProductModal()}
+
+function sameExtras(a,b){
+  const aa=[...(a||[])].sort();
+  const bb=[...(b||[])].sort();
+  return aa.length===bb.length&&aa.every((v,i)=>v===bb[i]);
+}
+function sameRegularCartItem(item,candidate){
+  return !item.mixed &&
+    (item.productIndex??productIndexByName(item.name))===candidate.productIndex &&
+    Number(item.pack)===Number(candidate.pack) &&
+    String(item.cover||'')===String(candidate.cover||'') &&
+    String(item.message||'').trim()===String(candidate.message||'').trim() &&
+    sameExtras(item.extras,candidate.extras);
+}
+function sameMix(a,b){
+  const keys=['Oreo Crunch','Coco Real','Pecana Real'];
+  return keys.every(k=>Number((a||{})[k]||0)===Number((b||{})[k]||0));
+}
+function sameMixedCartItem(item,candidate){
+  return !!item.mixed &&
+    Number(item.pack)===Number(candidate.pack) &&
+    String(item.message||'').trim()===String(candidate.message||'').trim() &&
+    sameMix(item.mix,candidate.mix);
+}
+
 function addConfigured(buyNow){
  const p=products[config.product],max=maxQtyForPack(config.pack);
  if(max<1){toast('No hay stock suficiente para esta presentación.');return}
  if(config.qty>max){toast('Reduce la cantidad antes de continuar.');return}
- cart.push({productIndex:config.product,name:p.name,img:p.img,pack:config.pack,cover:config.cover,extras:[...config.extras],message:config.message,qty:config.qty,price:unitConfigTotal()});
- save();updateCart();closeModal('productModal');toast('Agregado al carrito');
- if(buyNow){toggleCart();setTimeout(openCheckout,250)}
+
+ const candidate={
+   productIndex:config.product,
+   name:p.name,
+   img:p.img,
+   pack:config.pack,
+   cover:config.cover,
+   extras:[...config.extras],
+   message:config.message,
+   qty:config.qty,
+   price:unitConfigTotal()
+ };
+
+ const existingIndex=cart.findIndex(item=>sameRegularCartItem(item,candidate));
+
+ if(buyNow&&existingIndex>=0){
+   closeModal('productModal');
+   toast('Ese box ya estaba en tu carrito. No lo duplicamos.');
+   setTimeout(openCheckout,120);
+   return;
+ }
+
+ if(existingIndex>=0){
+   const business=({4:4,6:3,8:2,12:2}[candidate.pack]||1);
+   cart[existingIndex].qty=Math.min(
+     business,
+     Number(cart[existingIndex].qty||0)+Number(candidate.qty||1)
+   );
+ }else{
+   cart.push(candidate);
+ }
+
+ save();updateCart();closeModal('productModal');
+ toast(existingIndex>=0?'Cantidad actualizada en el carrito':'Agregado al carrito');
+ if(buyNow)setTimeout(openCheckout,120)
 }
 function updateCart(){$('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0);$('cartItems').innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-item"><img src="${x.img}" alt="${x.name}"><div><strong>${x.name}</strong><div style="font-size:11px;color:#786b62">Pack ${x.pack}${x.mixed?' · '+mixText(x.mix):' · '+x.cover}${x.extras.length?' · '+x.extras.join(', '):''}</div><div class="qty"><button aria-label="Disminuir cantidad de ${x.name}" onclick="cartQty(${i},-1)">−</button><b>${x.qty}</b><button aria-label="Aumentar cantidad de ${x.name}" onclick="cartQty(${i},1)">+</button></div></div><div style="text-align:right"><strong>S/ ${money(x.price*x.qty)}</strong><br><button class="remove" onclick="removeCart(${i})">Eliminar</button></div></div>`).join(''):'<p style="color:#777">Tu carrito está vacío.</p>';const t=cart.reduce((s,x)=>s+x.price*x.qty,0);$('sub').textContent=money(t);$('total').textContent=money(t)}
 function cartQty(i,d){
@@ -820,7 +905,9 @@ function openCheckout(){
  const max=new Date(now);max.setDate(max.getDate()+30);
  $('date').min=min.toISOString().slice(0,10);$('date').max=max.toISOString().slice(0,10);
  if(!$('date').value)$('date').value=min.toISOString().slice(0,10);
- updateAddress();updateCheckoutSummary();syncDeliveryCards();openModal('checkoutModal')
+ restorePhoneDraft();
+ updateAddress();updateCheckoutSummary();syncDeliveryCards();openModal('checkoutModal');
+ setTimeout(()=>restorePhoneDraft(),0)
 }
 function setDeliveryMethod(method,btn){
  const sel=$('method'); if(sel) sel.value=method;
@@ -851,6 +938,22 @@ function selectPay(btn){
  $('payHelp').textContent=payment==='Yape'?`Yapea al 920 579 782. El pedido queda pendiente hasta confirmar el pago.`:payment==='Plin'?`Haz Plin al 920 579 782. El pedido queda pendiente hasta confirmar el pago.`:`Paga en efectivo al recibir o recoger tu pedido.`
 }
 function makeOrderCode(){return 'TR-'+Date.now().toString(36).slice(-6).toUpperCase()}
+
+function handlePhoneInput(el){
+  if(!el)return;
+  const digits=String(el.value||'').replace(/\D/g,'').slice(0,11);
+  if(el.value!==digits)el.value=digits;
+  try{sessionStorage.setItem('theRealPhoneDraft',digits)}catch(_){}
+}
+function restorePhoneDraft(){
+  const el=$('phone');
+  if(!el)return;
+  try{
+    const saved=sessionStorage.getItem('theRealPhoneDraft')||'';
+    if(saved&&!el.value)el.value=saved;
+  }catch(_){}
+}
+
 function validPhone(v){const n=v.replace(/\D/g,'');return n.length===9||n.length===11}
 function setOrderSubmitting(on){
  orderSubmitting=on;
