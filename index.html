@@ -471,11 +471,24 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
   border:1px solid #eadfd0;background:#fff;color:#6b5749;
   border-radius:999px;padding:8px 12px;font-size:11px;font-weight:800
 }
-#phone{font-variant-numeric:tabular-nums}
+#contactPhoneTR{font-variant-numeric:tabular-nums}
+</style>
+
+
+<style id="phone-hardfix-v3-css">
+.phone-help{display:block;color:#8b7a6e;font-size:10px;margin:-2px 0 6px}
+#contactPhoneTR{
+  -webkit-appearance:none;
+  appearance:none;
+  background:#fff!important;
+  color:#3b2a22!important;
+  caret-color:#3b2a22!important;
+  -webkit-text-fill-color:#3b2a22!important;
+}
 </style>
 
 </head>
-<body data-the-real-version="checkout-fix-v2">
+<body data-the-real-version="phone-hardfix-v3">
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
 <header class="header">
   <div class="wrap navrow">
@@ -593,7 +606,7 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 <h2>Completa tu pedido</h2><p class="checkout-sub">Solo unos pasos más y tus chocotejas estarán en camino.</p>
 <div class="checkout-shell">
 <div class="checkout-left">
-<section class="checkout-panel"><h3><em>1.</em> Información personal</h3><div class="formgrid"><div class="full"><label class="lbl">Nombre completo <sup>*</sup></label><input id="name" maxlength="60" autocomplete="name" placeholder="Tu nombre completo"></div><div><label class="lbl">Teléfono <sup>*</sup></label><input id="phone" name="phone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" enterkeyhint="next" placeholder="920 579 782"></div><div><label class="lbl">Correo (opcional)</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"></div></div></section>
+<section class="checkout-panel"><h3><em>1.</em> Información personal</h3><div class="formgrid"><div class="full"><label class="lbl">Nombre completo <sup>*</sup></label><input id="name" maxlength="60" autocomplete="name" placeholder="Tu nombre completo"></div><div><label class="lbl">Teléfono <sup>*</sup></label><small class="phone-help">Escribe solo tu número de contacto.</small><input id="contactPhoneTR" type="text" inputmode="numeric" maxlength="15" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="next" data-lpignore="true" data-1p-ignore="true" placeholder="920 579 782"></div><div><label class="lbl">Correo (opcional)</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"></div></div></section>
 <section class="checkout-panel"><h3><em>2.</em> Tipo de entrega</h3><div class="delivery-choice"><button type="button" class="delivery-card active" data-method="Delivery" onclick="setDeliveryMethod('Delivery',this)"><span class="delivery-icon">🚚</span><span><strong>Delivery</strong><small>Recibe en la comodidad de tu casa</small></span></button><button type="button" class="delivery-card" data-method="Recojo" onclick="setDeliveryMethod('Recojo',this)"><span class="delivery-icon">▣</span><span><strong>Recojo</strong><small>Coordina tu recojo con THE REAL</small></span></button></div><select id="method" onchange="updateAddress();updateCheckoutSummary();syncDeliveryCards()" class="sr-only-select"><option>Delivery</option><option>Recojo</option></select>
 <div class="formgrid delivery-fields"><div id="districtWrap"><label class="lbl">Distrito <sup>*</sup></label><select id="district" onchange="updateCheckoutSummary()"><option value="">Selecciona distrito</option><option>Cercado de Lima</option><option>Breña</option><option>La Victoria</option><option>Lince</option><option>Jesús María</option><option>Rímac</option><option>Pueblo Libre</option><option>Magdalena</option><option>San Isidro</option><option>San Luis</option><option>San Miguel</option><option>Miraflores</option><option>Surquillo</option><option>San Borja</option><option>Santa Anita</option><option>El Agustino</option><option>Surco</option><option>San Martín de Porres</option><option>Independencia</option><option>Los Olivos</option><option>Ate</option><option>Chorrillos</option><option>Otro</option></select></div><div id="addressWrap"><label class="lbl">Dirección completa <sup>*</sup></label><input id="address" maxlength="170" autocomplete="street-address" placeholder="Av., calle, número, dpto."></div><div><label class="lbl">Fecha de entrega</label><input id="date" type="date"></div><div><label class="lbl">Horario aproximado</label><select id="time"><option>9:00–12:00</option><option>12:00–15:00</option><option>15:00–18:00</option><option>18:00–21:00</option></select></div><div class="full"><label class="lbl">Indicaciones (opcional)</label><textarea id="orderNote" maxlength="220" rows="3" placeholder="Ej.: referencia, color de puerta, tocar el timbre, etc."></textarea></div></div></section>
 </div>
@@ -995,9 +1008,9 @@ function reopenWhatsApp(){
  if(!w)toast('El navegador bloqueó la nueva pestaña. Permite ventanas emergentes o usa el botón flotante de WhatsApp.');
 }
 async function sendOrder(){
- const name=$('name').value.trim(),phone=$('phone').value.trim(),method=$('method').value,address=$('address').value.trim(),district=$('district').value,date=$('date').value,time=$('time').value,note=$('orderNote').value.trim();
+ const name=$('name').value.trim(),phone=$('contactPhoneTR').value.trim(),method=$('method').value,address=$('address').value.trim(),district=$('district').value,date=$('date').value,time=$('time').value,note=$('orderNote').value.trim();
  if(name.length<2){toast('Escribe tu nombre completo');$('name').focus();return}
- if(!validPhone(phone)){toast('Escribe un teléfono válido');$('phone').focus();return}
+ if(!validPhone(phone)){toast('Escribe un teléfono válido');$('contactPhoneTR').focus();return}
  if(!date){toast('Elige una fecha de entrega');return}
  if(method==='Delivery'&&!district){toast('Selecciona el distrito');$('district').focus();return}
  if(method==='Delivery'&&!address){toast('Escribe la dirección de entrega');$('address').focus();return}
