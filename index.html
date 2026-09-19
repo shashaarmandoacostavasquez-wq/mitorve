@@ -487,8 +487,9 @@ footer a,footer p,.footer a,.footer p{color:#e8daca !important}
 }
 </style>
 
+<meta name="the-real-build" content="phone-hardfix-v4">
 </head>
-<body data-the-real-version="phone-hardfix-v3">
+<body data-the-real-version="phone-hardfix-v4">
 <div class="topbar"><div class="wrap"><span>📍 Lima Metropolitana · Delivery y recojo</span><span>Chocotejas artesanales · Hechas para regalar</span><span>WhatsApp  920 579 782</span></div></div>
 <header class="header">
   <div class="wrap navrow">
@@ -1251,6 +1252,19 @@ window.addEventListener("hashchange", () => {
   const el = id ? document.querySelector(id) : null;
   if (el) setTimeout(() => el.scrollIntoView({behavior:"smooth",block:"start"}), 60);
 });
+</script>
+
+
+<script id="the-real-build-debug">
+(() => {
+  if (!new URLSearchParams(location.search).has('debug')) return;
+  const badge = document.createElement('div');
+  badge.textContent = 'THE REAL · phone-hardfix-v4';
+  badge.style.cssText =
+    'position:fixed;left:8px;bottom:8px;z-index:99999;background:#3a2419;color:#fff8ed;' +
+    'padding:7px 10px;border-radius:999px;font:700 11px system-ui;box-shadow:0 6px 20px rgba(0,0,0,.18)';
+  document.body.appendChild(badge);
+})();
 </script>
 
 </body></html>
