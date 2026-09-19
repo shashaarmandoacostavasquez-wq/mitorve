@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -16,7 +17,44 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 }));
-app.use(express.static(__dirname, { extensions: ['html'] }));
+const BUILD_ID = 'phone-hardfix-v4';
+
+function noCacheHtml(res) {
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'Surrogate-Control': 'no-store'
+  });
+}
+
+app.get('/', (req, res) => {
+  noCacheHtml(res);
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/index.html', (req, res) => {
+  noCacheHtml(res);
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/version', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({
+    ok: true,
+    build: BUILD_ID
+  });
+});
+
+app.use(express.static(__dirname, {
+  extensions: ['html'],
+  etag: false,
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) {
+      noCacheHtml(res);
+    }
+  }
+}));
 
 
 // ==========================================
